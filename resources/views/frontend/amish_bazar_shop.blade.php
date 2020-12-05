@@ -143,7 +143,7 @@
                         <br>
                         <div class="row modal-button ">
                             <div class="col-md-1 col-sm-1 col-1"></div>
-                            <div id="modal_cart_items" class="col-md-10 col-sm-10 col-10">
+                            <div id="modal_cart_items" class="col-md-10 col-sm-10 col-10 cart_item_class">
 
                                 @foreach($cart_items as $item)
 
@@ -170,7 +170,8 @@
                                                                 id="itemTotal1">{{$item->product->price}}</span>/kg
                                                         </p>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item"
+                                                    <div
+                                                        class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item"
                                                         data-id="{{$item->product_id}}">
                                                         <p id="cartMinus{{$item->id}}"
                                                            class="cartMinus d-flex align-items-center justify-content-center">
@@ -198,7 +199,8 @@
                                                             <img src="{{ asset('frontend/images/icons/cross.png') }}"
                                                                  alt="">
                                                         </p>
-                                                        <input type="hidden" data-id="{{$item->cart_id}}" id="hidden_cart_id">
+                                                        <input type="hidden" data-id="{{$item->cart_id}}"
+                                                               id="hidden_cart_id">
                                                     </div>
 
                                                 </div>
@@ -350,7 +352,6 @@
                             </div>
 
 
-
                             <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
                             <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
                                     class="yellow-btn cart-add">
@@ -426,38 +427,322 @@
             }
         };
 
+        function cartCross() {
 
+            $(".cartCross").off("click").on('click',function(event) {
+
+                var cart_product_id = $(this).data('id');
+                var cart_id = $('#hidden_cart_id').data('id');
+
+                console.log(cart_product_id, cart_id);
+
+                $.ajax({
+                    url: config.routes.cart_items_delete,
+                    type: "get",
+                    data: {
+
+                        cart_product_id: cart_product_id,
+                        cart_id: cart_id,
+
+                    },
+
+                    success: function (data) {
+                        // cartTotal();
+                    },
+                    error: function (data, errorThrown) {
+
+
+                    }
+                });
+
+                // event.stopImmediatePropagation();
+            });
+        }
         $(document).ready(function () {
-            function cartCross() {
-                $(".cartCross").click(function () {
-                    var cart_product_id = $(this).data('id');
-                    var cart_id = $('#hidden_cart_id').data('id');
-
-                    console.log(cart_product_id,cart_id);
-
-                    $.ajax({
-                        url: config.routes.cart_items_delete,
-                        type: "get",
-                        data: {
-
-                            cart_product_id: cart_product_id,
-                            cart_id: cart_id,
-
-                        },
-
-                        success: function (data) {
-                            // cartTotal();
-                        },
-                        error: function (data, errorThrown) {
 
 
+
+
+
+            modal_operation();
+
+
+            function modal_operation() {
+
+                $.ajax({
+                    url: config.routes.get_cart_items,
+                    type: "get",
+
+
+                    success: function (data) {
+
+
+                        // cartTotal();
+                        cartCross();
+
+                        let totalItem = Object.keys(data.carts).length;
+                        const noItems = document.getElementById('no-items');
+
+// no items in cart
+
+                        function displayNone() {
+                            if (totalItem < 0) {
+                                noItems.style.display = 'block';
+                            }
                         }
-                    });
+
+                        $.each(data.carts, function (key, value) {
+                            let plus1 = document.getElementById('cartPlus' + value.id);
+                            let minus1 = document.getElementById('cartMinus' + value.id);
+                            let cross1 = document.getElementById('cartCross' + value.id);
+                            let item1 = document.getElementById('item' + value.id);
+                            // console.log(minus1)
+
+                            // plus handler
+
+                            plus1.addEventListener('click', function () {
+                                const quantity = document.getElementById('item_quantity-' + value.id).innerText;
+                                const quantityNumber = parseInt(quantity);
+                                const item1Quantity = addQuantity('item_quantity-' + value.id, 1, quantityNumber);
+                                const onePrice = singlePrice('subTotal' + value.id, item1Quantity - 1);
+                                addPrice('subTotal' + value.id, item1Quantity, onePrice);
+                                total('total', onePrice);
+                            });
+
+
+                            minus1.addEventListener('click', function () {
+                                const quantity = document.getElementById('item_quantity-' + value.id).innerText;
+                                const quantityNumber = parseInt(quantity);
+                                // console.log(quantityNumber);
+                                if (quantityNumber > 1) {
+                                    const item1Quantity = addQuantity('item_quantity-' + value.id, -1, quantityNumber);
+                                    const onePrice = singlePrice('subTotal' + value.id, item1Quantity + 1);
+                                    addPrice('subTotal' + value.id, item1Quantity, onePrice);
+                                    total('total', (-1 * onePrice));
+                                }
+                            });
+
+                            cross1.addEventListener('click', function () {
+                                const subTotal = document.getElementById('subTotal' + value.id).innerText;
+                                // console.log(subTotal);
+                                const subTotalNumber = parseInt(subTotal);
+                                total('total', (-1 * subTotalNumber));
+                                totalItem--;
+                                displayNone();
+                                item1.style.display = 'none';
+
+                            })
+
+                        });
+                        $('.product_cart, .my_cart_item').on('click', function (e) {
+
+                            var product_id = $(this).data('id');
+                            var product_quantity = "";
+                            var cart_quantity = ($(this).find('.cart_quantity').text());
+
+
+                            if (cart_quantity == 0) {
+
+                                product_quantity = ($(this).find('.product-item-quantity').text());
+                            } else {
+                                product_quantity = ($(this).find('.cart_quantity').text());
+                            }
+
+
+                            $.ajax({
+                                url: config.routes.product_add_to_cart_operation,
+                                type: "get",
+                                data: {
+                                    product_id: product_id,
+                                    product_quantity: product_quantity,
+                                },
+                                success: function (data) {
+
+
+                                    if (data.status === "first_order_created") {
+                                        $('#modal_cart_items').empty();
+                                        var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+
+                                        cartCross();
+
+                                        $('.product_cart, .my_cart_item').on('click', function (e) {
+
+                                            var product_id = $(this).data('id');
+                                            var product_quantity = "";
+                                            var cart_quantity = ($(this).find('.cart_quantity').text());
+
+
+                                            if (cart_quantity == 0) {
+
+                                                product_quantity = ($(this).find('.product-item-quantity').text());
+                                            } else {
+                                                product_quantity = ($(this).find('.cart_quantity').text());
+                                            }
+
+
+                                            console.log(product_id, product_quantity);
+
+
+                                            $.ajax({
+                                                url: config.routes.product_add_to_cart_operation,
+                                                type: "get",
+                                                data: {
+                                                    product_id: product_id,
+                                                    product_quantity: product_quantity,
+                                                },
+                                                success: function (data) {
+
+
+                                                }
+
+                                            })
+
+
+                                        });
+
+                                        let plus1 = document.getElementById('cartPlus' + data.cart_product.id);
+                                        let minus1 = document.getElementById('cartMinus' + data.cart_product.id);
+                                        let cross1 = document.getElementById('cartCross' + data.cart_product.id);
+                                        let item1 = document.getElementById('item' + data.cart_product.id);
+                                        // console.log(minus1)
+
+                                        // plus handler
+
+                                        plus1.addEventListener('click', function () {
+                                            const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                            const quantityNumber = parseInt(quantity);
+                                            const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, 1, quantityNumber);
+                                            const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity - 1);
+                                            addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                            total('total', onePrice);
+                                        });
+
+
+                                        minus1.addEventListener('click', function () {
+                                            const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                            const quantityNumber = parseInt(quantity);
+                                            // console.log(quantityNumber);
+                                            if (quantityNumber > 1) {
+                                                const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, -1, quantityNumber);
+                                                const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity + 1);
+                                                addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                                total('total', (-1 * onePrice));
+                                            }
+                                        });
+
+                                        cross1.addEventListener('click', function () {
+                                            const subTotal = document.getElementById('subTotal' + data.cart_product.id).innerText;
+                                            // console.log(subTotal);
+                                            const subTotalNumber = parseInt(subTotal);
+                                            total('total', (-1 * subTotalNumber));
+                                            totalItem--;
+                                            displayNone();
+                                            item1.style.display = 'none';
+
+                                        })
+
+                                    }
+
+                                   else if (data.status === "order_created_after_first_order") {
+                                        // $('#modal_cart_items').empty();
+                                        var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        cartCross();
+                                        $('.product_cart, .my_cart_item').on('click', function (e) {
+
+                                            var product_id = $(this).data('id');
+                                            var product_quantity = "";
+                                            var cart_quantity = ($(this).find('.cart_quantity').text());
+
+
+                                            if (cart_quantity == 0) {
+
+                                                product_quantity = ($(this).find('.product-item-quantity').text());
+                                            } else {
+                                                product_quantity = ($(this).find('.cart_quantity').text());
+                                            }
+
+
+                                            console.log(product_id, product_quantity);
+
+
+                                            $.ajax({
+                                                url: config.routes.product_add_to_cart_operation,
+                                                type: "get",
+                                                data: {
+                                                    product_id: product_id,
+                                                    product_quantity: product_quantity,
+                                                },
+                                                success: function (data) {
+
+
+                                                }
+
+                                            })
+
+
+                                        });
+
+                                        let plus1 = document.getElementById('cartPlus' + data.cart_product.id);
+                                        let minus1 = document.getElementById('cartMinus' + data.cart_product.id);
+                                        let cross1 = document.getElementById('cartCross' + data.cart_product.id);
+                                        let item1 = document.getElementById('item' + data.cart_product.id);
+                                        // console.log(minus1)
+
+                                        // plus handler
+
+                                        plus1.addEventListener('click', function () {
+                                            const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                            const quantityNumber = parseInt(quantity);
+                                            const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, 1, quantityNumber);
+                                            const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity - 1);
+                                            addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                            total('total', onePrice);
+                                        });
+
+
+                                        minus1.addEventListener('click', function () {
+                                            const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                            const quantityNumber = parseInt(quantity);
+                                            // console.log(quantityNumber);
+                                            if (quantityNumber > 1) {
+                                                const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, -1, quantityNumber);
+                                                const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity + 1);
+                                                addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                                total('total', (-1 * onePrice));
+                                            }
+                                        });
+
+                                        cross1.addEventListener('click', function () {
+                                            const subTotal = document.getElementById('subTotal' + data.cart_product.id).innerText;
+                                            // console.log(subTotal);
+                                            const subTotalNumber = parseInt(subTotal);
+                                            total('total', (-1 * subTotalNumber));
+                                            totalItem--;
+                                            displayNone();
+                                            item1.style.display = 'none';
+
+                                        })
+
+                                    }
+
+
+                                }
+
+                            })
+
+
+                        });
+
+
+                    }
 
 
                 });
-            }
 
+
+            }
 
 
             const cartMinus = document.getElementsByClassName('page-minus');
@@ -533,7 +818,7 @@
             }
 
 
-// adding or removing Quantity
+            // adding or removing Quantity
 
             function addQuantity(id, number, quantityNumber) {
                 const updatedQuantity = quantityNumber + number;
@@ -541,7 +826,7 @@
                 return updatedQuantity;
             }
 
-// adding or removing price
+            // adding or removing price
 
             function addPrice(id, quantity, onePrice) {
                 const price = document.getElementById(id).innerText;
@@ -552,8 +837,8 @@
                 return updatedPrice;
             }
 
-//
-// calculate single price
+            //
+            // calculate single price
 
             function singlePrice(id, quantity) {
                 const price = document.getElementById(id).innerText;
@@ -562,7 +847,7 @@
                 return singlePrice;
             }
 
-// calculate total price
+            // calculate total price
 
             function total(id, singlePrice) {
                 const total = document.getElementById(id).innerText;
@@ -572,359 +857,6 @@
                     totalNumber = 0;
                 }
                 document.getElementById(id).innerText = (totalNumber + singlePrice).toFixed(0);
-            }
-
-            modal_operation();
-
-            function modal_operation() {
-
-                $.ajax({
-                    url: config.routes.get_cart_items,
-                    type: "get",
-
-
-                    success: function (data) {
-
-
-                        // cartTotal();
-                        cartCross();
-
-                        $('.product_cart, .my_cart_item').on('click', function (e) {
-
-                            var product_id = $(this).data('id');
-                            // var product_quantity = ($(this).find('.product-item-quantity').text());
-
-
-                            var product_quantity = "";
-                            // var product_quantity = ($(this).find('.product-item-quantity').text());
-                            var cart_quantity = ($(this).find('.cart_quantity').text());
-
-
-                            if (cart_quantity == 0) {
-
-                                product_quantity = ($(this).find('.product-item-quantity').text());
-                            } else {
-                                product_quantity = ($(this).find('.cart_quantity').text());
-                            }
-
-
-                            console.log(product_id, product_quantity);
-
-
-                            $.ajax({
-                                url: config.routes.product_add_to_cart_operation,
-                                type: "get",
-                                data: {
-                                    product_id: product_id,
-                                    product_quantity: product_quantity,
-                                },
-                                success: function (data) {
-
-
-                                    if(data.status == "first_order_created") {
-                                        $('#modal_cart_items').empty();
-                                        var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="'+data.cart_product.cart_id+'" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
-
-                                        modal_operation();
-                                    }
-
-
-
-
-                                }
-
-                            })
-
-
-                        });
-
-                        let totalItem = Object.keys(data.carts).length;
-                        const noItems = document.getElementById('no-items');
-
-// no items in cart
-
-                        function displayNone() {
-                            if (totalItem < 0) {
-                                noItems.style.display = 'block';
-                            }
-                        }
-
-                        $.each(data.carts, function (key, value) {
-                            let plus1 = document.getElementById('cartPlus' + value.id);
-                            let minus1 = document.getElementById('cartMinus' + value.id);
-                            let cross1 = document.getElementById('cartCross' + value.id);
-                            let item1 = document.getElementById('item' + value.id);
-                            // console.log(minus1)
-
-                            // plus handler
-
-                            plus1.addEventListener('click', function () {
-                                const quantity = document.getElementById('item_quantity-' + value.id).innerText;
-                                const quantityNumber = parseInt(quantity);
-                                const item1Quantity = addQuantity('item_quantity-' + value.id, 1, quantityNumber);
-                                const onePrice = singlePrice('subTotal' + value.id, item1Quantity - 1);
-                                addPrice('subTotal' + value.id, item1Quantity, onePrice);
-                                total('total', onePrice);
-                            });
-
-
-                            minus1.addEventListener('click', function () {
-                                const quantity = document.getElementById('item_quantity-' + value.id).innerText;
-                                const quantityNumber = parseInt(quantity);
-                                // console.log(quantityNumber);
-                                if (quantityNumber > 1) {
-                                    const item1Quantity = addQuantity('item_quantity-' + value.id, -1, quantityNumber);
-                                    const onePrice = singlePrice('subTotal' + value.id, item1Quantity + 1);
-                                    addPrice('subTotal' + value.id, item1Quantity, onePrice);
-                                    total('total', (-1 * onePrice));
-                                }
-                            });
-
-                            cross1.addEventListener('click', function () {
-                                const subTotal = document.getElementById('subTotal' + value.id).innerText;
-                                // console.log(subTotal);
-                                const subTotalNumber = parseInt(subTotal);
-                                total('total', (-1 * subTotalNumber));
-                                totalItem--;
-                                displayNone();
-                                item1.style.display = 'none';
-
-                            })
-
-                        });
-
-                        //
-                        // $(".product_cart,.my_cart_item").click(function () {
-                        //
-                        //
-                        //     let qnty = "";
-                        //     var product_quantity = ($(this).find('.product_quantity').text());
-                        //     var cart_quantity = ($(this).find('.cart_quantity').text());
-                        //
-                        //
-                        //     if (cart_quantity == 0) {
-                        //
-                        //         qnty = ($(this).find('.product_quantity').text());
-                        //     } else {
-                        //         qnty = ($(this).find('.cart_quantity').text());
-                        //     }
-                        //
-                        //     var product_id = $(this).data('id');
-                        //
-                        //     $.ajax({
-                        //         url: config.routes.product_detail,
-                        //         type: "get",
-                        //         data: {
-                        //             qnty: qnty,
-                        //             product_id: product_id,
-                        //
-                        //         },
-                        //
-                        //         success: function (data) {
-                        //             cartTotal();
-                        //             var subTotalPrice = data.test.product.price * data.test.product_quantity;
-                        //             $('#item' + data.test.id).replaceWith('<div class="all_cart_items" id="item' + data.test.id + '" data-id="all_items_cart_id' + data.test.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.test.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.test.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.test.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.test.product_id + '">  <p id="cartMinus' + data.test.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.test.id + '">' + data.test.product_quantity + '</span></p> <p id="cartPlus' + data.test.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.test.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.test.id + '"><img src="frontend/images/icons/cross.png" alt=""></p></div>      </div>               </div>                       </div>       <hr>         </div>');
-                        //
-                        //
-                        //             let plus1 = document.getElementById('cartPlus' + data.test.id);
-                        //             let minus1 = document.getElementById('cartMinus' + data.test.id);
-                        //             let cross1 = document.getElementById('cartCross' + data.test.id);
-                        //             let item1 = document.getElementById('item' + data.test.id);
-                        //
-                        //
-                        //             plus1.addEventListener('click', function () {
-                        //                 const quantity = document.getElementById('item_quantity-' + data.test.id).innerText;
-                        //                 const quantityNumber = parseInt(quantity);
-                        //                 const item1Quantity = addQuantity('item_quantity-' + data.test.id, 1, quantityNumber);
-                        //                 const onePrice = singlePrice('subTotal' + data.test.id, item1Quantity - 1);
-                        //                 addPrice('subTotal' + data.test.id, item1Quantity, onePrice);
-                        //                 total('total', onePrice);
-                        //             });
-                        //
-                        //
-                        //             minus1.addEventListener('click', function () {
-                        //                 const quantity = document.getElementById('item_quantity-' + data.test.id).innerText;
-                        //                 const quantityNumber = parseInt(quantity);
-                        //
-                        //                 if (quantityNumber > 1) {
-                        //                     const item1Quantity = addQuantity('item_quantity-' + data.test.id, -1, quantityNumber);
-                        //                     const onePrice = singlePrice('subTotal' + data.test.id, item1Quantity + 1);
-                        //                     addPrice('subTotal' + data.test.id, item1Quantity, onePrice);
-                        //                     total('total', (-1 * onePrice));
-                        //                 }
-                        //             });
-                        //
-                        //             cross1.addEventListener('click', function () {
-                        //                 const subTotal = document.getElementById('subTotal' + data.test.id).innerText;
-                        //
-                        //                 const subTotalNumber = parseInt(subTotal);
-                        //                 total('total', (-1 * subTotalNumber));
-                        //                 totalItem--;
-                        //                 displayNone();
-                        //                 item1.style.display = 'none';
-                        //
-                        //             });
-                        //
-                        //             $(".product_cart,.my_cart_item").click(function () {
-                        //
-                        //
-                        //                 let qnty = "";
-                        //                 var product_quantity = ($(this).find('.product_quantity').text());
-                        //                 var cart_quantity = ($(this).find('.cart_quantity').text());
-                        //
-                        //                 if (cart_quantity == 0) {
-                        //
-                        //                     qnty = ($(this).find('.product_quantity').text());
-                        //                 } else {
-                        //                     qnty = ($(this).find('.cart_quantity').text());
-                        //                 }
-                        //                 var product_id = $(this).data('id');
-                        //
-                        //                 $.ajax({
-                        //                     url: config.routes.product_detail,
-                        //                     type: "get",
-                        //                     data: {
-                        //                         qnty: qnty,
-                        //                         product_id: product_id,
-                        //
-                        //                     },
-                        //
-                        //                     success: function (data) {
-                        //
-                        //                         cartTotal();
-                        //                     },
-                        //                     error: function (data, errorThrown) {
-                        //
-                        //
-                        //                     }
-                        //                 });
-                        //
-                        //
-                        //             });
-                        //
-                        //             cartCross();
-                        //         },
-                        //         error: function (data, errorThrown) {
-                        //
-                        //
-                        //         }
-                        //     });
-                        //
-                        //
-                        // });
-                        //
-                        // $('.cart-add').click(function () {
-                        //
-                        //
-                        //     var product_id = $(this).data('id');
-                        //
-                        //     $.ajax({
-                        //         url: config.routes.product_detail,
-                        //         type: "get",
-                        //
-                        //         data: {
-                        //             product_id: product_id,
-                        //         },
-                        //
-                        //         success: function (data) {
-                        //             $('#modal_cart_items').empty();
-                        //             cartTotal();
-                        //             var subTotalPrice = data.test.product.price * data.test.product_quantity;
-                        //             $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.test.id + '" data-id="all_items_cart_id' + data.test.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.test.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.test.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.test.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.test.product_id + '">  <p id="cartMinus' + data.test.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.test.id + '">' + data.test.product_quantity + '</span></p> <p id="cartPlus' + data.test.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.test.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.test.id + '"><img src="frontend/images/icons/cross.png" alt=""></p></div>      </div>               </div>                       </div>       <hr>         </div>');
-                        //
-                        //             let plus1 = document.getElementById('cartPlus' + data.test.id);
-                        //             let minus1 = document.getElementById('cartMinus' + data.test.id);
-                        //             let cross1 = document.getElementById('cartCross' + data.test.id);
-                        //             let item1 = document.getElementById('item' + data.test.id);
-                        //
-                        //
-                        //             plus1.addEventListener('click', function () {
-                        //                 const quantity = document.getElementById('item_quantity-' + data.test.id).innerText;
-                        //                 const quantityNumber = parseInt(quantity);
-                        //                 const item1Quantity = addQuantity('item_quantity-' + data.test.id, 1, quantityNumber);
-                        //                 const onePrice = singlePrice('subTotal' + data.test.id, item1Quantity - 1);
-                        //                 addPrice('subTotal' + data.test.id, item1Quantity, onePrice);
-                        //                 total('total', onePrice);
-                        //             });
-                        //
-                        //
-                        //             minus1.addEventListener('click', function () {
-                        //                 const quantity = document.getElementById('item_quantity-' + data.test.id).innerText;
-                        //                 const quantityNumber = parseInt(quantity);
-                        //
-                        //                 if (quantityNumber > 1) {
-                        //                     const item1Quantity = addQuantity('item_quantity-' + data.test.id, -1, quantityNumber);
-                        //                     const onePrice = singlePrice('subTotal' + data.test.id, item1Quantity + 1);
-                        //                     addPrice('subTotal' + data.test.id, item1Quantity, onePrice);
-                        //                     total('total', (-1 * onePrice));
-                        //                 }
-                        //             });
-                        //
-                        //             cross1.addEventListener('click', function () {
-                        //                 const subTotal = document.getElementById('subTotal' + data.test.id).innerText;
-                        //
-                        //                 const subTotalNumber = parseInt(subTotal);
-                        //                 total('total', (-1 * subTotalNumber));
-                        //                 totalItem--;
-                        //                 displayNone();
-                        //                 item1.style.display = 'none';
-                        //
-                        //             });
-                        //
-                        //
-                        //             $(".product_cart,.my_cart_item").click(function () {
-                        //
-                        //                 let qnty = "";
-                        //                 var product_quantity = ($(this).find('.product_quantity').text());
-                        //                 var cart_quantity = ($(this).find('.cart_quantity').text());
-                        //
-                        //                 if (cart_quantity == 0) {
-                        //
-                        //                     qnty = ($(this).find('.product_quantity').text());
-                        //                 } else {
-                        //                     qnty = ($(this).find('.cart_quantity').text());
-                        //                 }
-                        //                 var product_id = $(this).data('id');
-                        //
-                        //                 $.ajax({
-                        //                     url: config.routes.product_detail,
-                        //                     type: "get",
-                        //                     data: {
-                        //                         qnty: qnty,
-                        //                         product_id: product_id,
-                        //
-                        //                     },
-                        //
-                        //                     success: function (data) {
-                        //                         cartTotal();
-                        //
-                        //                     },
-                        //                     error: function (data, errorThrown) {
-                        //
-                        //
-                        //                     }
-                        //                 });
-                        //
-                        //
-                        //             });
-                        //
-                        //             cartCross();
-                        //
-                        //
-                        //         },
-                        //         error: function (data, errorThrown) {
-                        //
-                        //
-                        //         }
-                        //     });
-                        //
-                        // });
-
-                    }
-
-                });
-
             }
 
 

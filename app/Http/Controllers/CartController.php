@@ -74,6 +74,18 @@ class CartController extends Controller
                     $cart_product->product_id = $product_id;
                     $cart_product->product_quantity = $product_quantity;
                     $cart_product->save();
+
+
+                    $status = "order_created_after_first_order";
+
+                    $cart_product = CartProduct::with('product')->find($cart_product->id);
+
+                    return response()->json([
+
+                        "cart_product" => $cart_product,
+                        "status" => $status
+                    ]);
+
                 }
 
 //
