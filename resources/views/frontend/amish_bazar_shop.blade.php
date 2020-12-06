@@ -148,7 +148,7 @@
                                 @foreach($cart_items as $item)
 
 
-                                    <div class="all_cart_items" id="item{{$item->id}}"
+                                    <div class="all_cart_items" id="cart_item_id{{$item->id}}"
                                          data-id="all_items_cart_id{{$item->id}}">
                                         <div class="row">
                                             <div
@@ -429,7 +429,7 @@
 
         function cartCross() {
 
-            $(".cartCross").off("click").on('click',function(event) {
+            $(".cartCross").off("click").on('click', function (event) {
 
                 var cart_product_id = $(this).data('id');
                 var cart_id = $('#hidden_cart_id').data('id');
@@ -458,12 +458,52 @@
                 // event.stopImmediatePropagation();
             });
         }
+
+
+        function test_cart() {
+            $('.my_cart_item').off("click").on('click', function (e) {
+
+                var product_id = $(this).data('id');
+                // var product_quantity = "";
+                var product_quantity = ($(this).find('.cart_quantity').text());
+                // var cart_quantity = ($(this).find('.cart_quantity').text());
+
+
+                // if (cart_quantity == 0) {
+                //
+                //     product_quantity = ($(this).find('.product-item-quantity').text());
+                // } else {
+                //     product_quantity = ($(this).find('.cart_quantity').text());
+                // }
+
+
+                console.log(product_id, product_quantity);
+
+
+                $.ajax({
+                    url: config.routes.product_add_to_cart_operation,
+                    type: "get",
+                    data: {
+                        product_id: product_id,
+                        product_quantity: product_quantity,
+                    },
+                    success: function (data) {
+
+
+                    }
+
+                })
+
+
+            });
+        }
+
         $(document).ready(function () {
 
 
+            // cart_test();
 
-
-
+            test_cart();
             modal_operation();
 
 
@@ -534,19 +574,21 @@
                             })
 
                         });
-                        $('.product_cart, .my_cart_item').on('click', function (e) {
+                        // $('.product_cart, .my_cart_item').on('click', function (e) {
+                        $('.product_cart').on('click', function (e) {
+
 
                             var product_id = $(this).data('id');
-                            var product_quantity = "";
-                            var cart_quantity = ($(this).find('.cart_quantity').text());
+                            var product_quantity = ($(this).find('.product-item-quantity').text());
+                            // var cart_quantity = ($(this).find('.cart_quantity').text());
 
 
-                            if (cart_quantity == 0) {
-
-                                product_quantity = ($(this).find('.product-item-quantity').text());
-                            } else {
-                                product_quantity = ($(this).find('.cart_quantity').text());
-                            }
+                            // if (cart_quantity == 0) {
+                            //
+                            //     product_quantity = ($(this).find('.product-item-quantity').text());
+                            // } else {
+                            //     product_quantity = ($(this).find('.cart_quantity').text());
+                            // }
 
 
                             $.ajax({
@@ -557,50 +599,14 @@
                                     product_quantity: product_quantity,
                                 },
                                 success: function (data) {
-
-
                                     if (data.status === "first_order_created") {
-                                        $('#modal_cart_items').empty();
+                                        // $('#modal_cart_items').empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
                                         $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
 
                                         cartCross();
 
-                                        $('.product_cart, .my_cart_item').on('click', function (e) {
-
-                                            var product_id = $(this).data('id');
-                                            var product_quantity = "";
-                                            var cart_quantity = ($(this).find('.cart_quantity').text());
-
-
-                                            if (cart_quantity == 0) {
-
-                                                product_quantity = ($(this).find('.product-item-quantity').text());
-                                            } else {
-                                                product_quantity = ($(this).find('.cart_quantity').text());
-                                            }
-
-
-                                            console.log(product_id, product_quantity);
-
-
-                                            $.ajax({
-                                                url: config.routes.product_add_to_cart_operation,
-                                                type: "get",
-                                                data: {
-                                                    product_id: product_id,
-                                                    product_quantity: product_quantity,
-                                                },
-                                                success: function (data) {
-
-
-                                                }
-
-                                            })
-
-
-                                        });
-
+                                        test_cart();
                                         let plus1 = document.getElementById('cartPlus' + data.cart_product.id);
                                         let minus1 = document.getElementById('cartMinus' + data.cart_product.id);
                                         let cross1 = document.getElementById('cartCross' + data.cart_product.id);
@@ -643,46 +649,13 @@
                                         })
 
                                     }
-
-                                   else if (data.status === "order_created_after_first_order") {
+                                    else if (data.status === "order_created_after_first_order") {
                                         // $('#modal_cart_items').empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
                                         $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
                                         cartCross();
-                                        $('.product_cart, .my_cart_item').on('click', function (e) {
+                                        test_cart();
 
-                                            var product_id = $(this).data('id');
-                                            var product_quantity = "";
-                                            var cart_quantity = ($(this).find('.cart_quantity').text());
-
-
-                                            if (cart_quantity == 0) {
-
-                                                product_quantity = ($(this).find('.product-item-quantity').text());
-                                            } else {
-                                                product_quantity = ($(this).find('.cart_quantity').text());
-                                            }
-
-
-                                            console.log(product_id, product_quantity);
-
-
-                                            $.ajax({
-                                                url: config.routes.product_add_to_cart_operation,
-                                                type: "get",
-                                                data: {
-                                                    product_id: product_id,
-                                                    product_quantity: product_quantity,
-                                                },
-                                                success: function (data) {
-
-
-                                                }
-
-                                            })
-
-
-                                        });
 
                                         let plus1 = document.getElementById('cartPlus' + data.cart_product.id);
                                         let minus1 = document.getElementById('cartMinus' + data.cart_product.id);
@@ -726,11 +699,62 @@
                                         })
 
                                     }
+                                    // else {
+                                    //
+                                    //     var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
+                                    //     $('#cart_item_id' + data.cart_product.id).replaceWith('<div class="all_cart_items" id="cart_item_id' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.test.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">   </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                    //
+                                    //     cartCross();
+                                    //     test_cart();
+                                    //
+                                    //
+                                    //     let plus1 = document.getElementById('cartPlus' + data.cart_product.id);
+                                    //     let minus1 = document.getElementById('cartMinus' + data.cart_product.id);
+                                    //     let cross1 = document.getElementById('cartCross' + data.cart_product.id);
+                                    //     let item1 = document.getElementById('item' + data.cart_product.id);
+                                    //     // console.log(minus1)
+                                    //
+                                    //     // plus handler
+                                    //
+                                    //     plus1.addEventListener('click', function () {
+                                    //         const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                    //         const quantityNumber = parseInt(quantity);
+                                    //         const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, 1, quantityNumber);
+                                    //         const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity - 1);
+                                    //         addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                    //         total('total', onePrice);
+                                    //     });
+                                    //
+                                    //
+                                    //     minus1.addEventListener('click', function () {
+                                    //         const quantity = document.getElementById('item_quantity-' + data.cart_product.id).innerText;
+                                    //         const quantityNumber = parseInt(quantity);
+                                    //         // console.log(quantityNumber);
+                                    //         if (quantityNumber > 1) {
+                                    //             const item1Quantity = addQuantity('item_quantity-' + data.cart_product.id, -1, quantityNumber);
+                                    //             const onePrice = singlePrice('subTotal' + data.cart_product.id, item1Quantity + 1);
+                                    //             addPrice('subTotal' + data.cart_product.id, item1Quantity, onePrice);
+                                    //             total('total', (-1 * onePrice));
+                                    //         }
+                                    //     });
+                                    //
+                                    //     cross1.addEventListener('click', function () {
+                                    //         const subTotal = document.getElementById('subTotal' + data.cart_product.id).innerText;
+                                    //         // console.log(subTotal);
+                                    //         const subTotalNumber = parseInt(subTotal);
+                                    //         total('total', (-1 * subTotalNumber));
+                                    //         totalItem--;
+                                    //         displayNone();
+                                    //         item1.style.display = 'none';
+                                    //
+                                    //     })
+                                    //
+                                    // }
 
 
                                 }
 
-                            })
+                            });
 
 
                         });

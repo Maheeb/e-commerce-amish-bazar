@@ -60,6 +60,7 @@ class CartController extends Controller
 
                     $status = "existing_updated";
                     $cart_product = CartProduct::with('product')->find($cart_product->id);
+
 //            dd($add_to_cart_item);
                     return response()->json([
 
@@ -77,8 +78,10 @@ class CartController extends Controller
 
 
                     $status = "order_created_after_first_order";
+//                    $status = "first_order_created";
 
                     $cart_product = CartProduct::with('product')->find($cart_product->id);
+
 
                     return response()->json([
 
@@ -88,15 +91,6 @@ class CartController extends Controller
 
                 }
 
-//
-//                $status = "update";
-//                $cart_product = CartProduct::with('cart_product')->find($cart_data->id);
-////            dd($add_to_cart_item);
-//                return response()->json([
-//
-////                    "cart_product" => $cart_product,
-////                    "status" => $status
-//                ]);
             }
         } else {
 
@@ -113,6 +107,7 @@ class CartController extends Controller
             }
             $status = "first_order_created";
             $cart_product = CartProduct::with('product')->find($cart_product->id);
+
 
             return response()->json([
 
