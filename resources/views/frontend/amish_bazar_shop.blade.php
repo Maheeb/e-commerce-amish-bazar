@@ -247,8 +247,8 @@
             <a data-toggle="modal" data-target="#cart">
                 <img src="{{asset('frontend/images/icons/fix.png')}}" alt="">
                 <div class="fix-info">
-{{--                    <p>50 Items</p>--}}
-{{--                    <h6>৳ 45000</h6>--}}
+                    {{--                    <p>50 Items</p>--}}
+                    {{--                    <h6>৳ 45000</h6>--}}
                     <p><span id="total_cart_item">{{$cart_count}} </span> Item</p>
                     <h6>৳ <span id="total_amount_side">{{$total_amount}}</span></h6>
                 </div>
@@ -271,7 +271,6 @@
                     </a>
 
 
-
                     @foreach($categories as $cat_item)
                         <a href="" data-id="{{$cat_item->id}}" class="menu d-flex align-items-center sidebar_category">
                             <p></p>
@@ -281,11 +280,11 @@
                             <p>{{$cat_item->category_name}}</p>
                         </a>
                     @endforeach
-{{--                    <a href="" class="side-menu-last menu d-flex align-items-center">--}}
-{{--                        <p></p>--}}
-{{--                        <img src="{{asset('frontend/images/icons/fish.png')}}" alt="">--}}
-{{--                        <p>Fish</p>--}}
-{{--                    </a>--}}
+                    {{--                    <a href="" class="side-menu-last menu d-flex align-items-center">--}}
+                    {{--                        <p></p>--}}
+                    {{--                        <img src="{{asset('frontend/images/icons/fish.png')}}" alt="">--}}
+                    {{--                        <p>Fish</p>--}}
+                    {{--                    </a>--}}
                     <br>
                     <div id="range" class="range">
                         <h6>Price Range</h6>
@@ -305,7 +304,7 @@
                     <div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">
 
 
-{{--                        <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">--}}
+                        {{--                        <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">--}}
                         <div class="" id="{{ $product->id }}" data-id="{{$product->id}}">
                             <img src="{{ asset($product->product_image) }}" alt="">
                             <div class="product-info text-center special_info">
@@ -319,34 +318,45 @@
                             </div>
 
                             <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">
-                            <div style="display: none" id="item-plus-minus-{{$product->id}}"
-                                 data-id="{{$product->id}}"
-                                 class="cart-plus-minus">
+                                <div style="display: none" id="item-plus-minus-{{$product->id}}"
+                                     data-id="{{$product->id}}"
+                                     class="cart-plus-minus">
 
-                                <div class="plus-minus d-flex test">
-                                    <button class="page-minus" id="product-minus-{{$product->id}}">
-                                        <strong class="d-flex align-items-center justify-content-center">-</strong>
-                                    </button>
-                                    <p class="d-flex align-items-center justify-content-center">
-                                    <span id="product-item-quantity-{{$product->id}}"
-                                          class="product-item-quantity">0</span> in Cart
+                                    <div class="plus-minus d-flex test">
+                                        <button class="page-minus" id="product-minus-{{$product->id}}">
+                                            <strong class="d-flex align-items-center justify-content-center">-</strong>
+                                        </button>
+                                        <p class="d-flex align-items-center justify-content-center">
+                                            {{--                                    <span id="product-item-quantity-{{$product->id}}"--}}
+                                            {{--                                          class="product-item-quantity">0</span> in Cart--}}
+                                            @if($product->cart_product !==null)
+                                                @if($product->cart_product->product_id == $product->id)
+                                                    <span id="product-item-quantity-{{$product->id}}"
+                                                          class="product-item-quantity">{{number_format(($product->cart_product->product_quantity)-1)}}</span>
+                                                    in Cart
 
-                                    </p>
+                                                @endif
 
-                                    <button id="product-plus-{{$product->id}}" class="page-plus">
-                                        <strong class="d-flex align-items-center justify-content-center">+</strong>
-                                    </button>
+                                            @else
+                                                <span id="product-item-quantity-{{$product->id}}"
+                                                      class="product-item-quantity">0</span> in Cart
+                                            @endif
+                                        </p>
+
+                                        <button id="product-plus-{{$product->id}}" class="page-plus">
+                                            <strong class="d-flex align-items-center justify-content-center">+</strong>
+                                        </button>
+                                    </div>
+
                                 </div>
 
+
+                                <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                                <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
+                                        class="yellow-btn cart-add">
+                                    Add to cart
+                                </button>
                             </div>
-
-
-                            <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
-                            <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
-                                    class="yellow-btn cart-add">
-                                Add to cart
-                            </button>
-                        </div>
 
                         </div>
                     </div>
@@ -419,7 +429,7 @@
                 var cart_product_id = $(this).data('id');
                 var cart_id = $('#hidden_cart_id').data('id');
 
-                console.log(cart_product_id, cart_id);
+                // console.log(cart_product_id, cart_id);
 
                 $.ajax({
                     url: config.routes.cart_items_delete,
@@ -445,8 +455,6 @@
         }
 
 
-
-
         function cartTotal() {
             $.ajax({
                 url: config.routes.cart_total,
@@ -454,7 +462,7 @@
 
                 success: function (data) {
 
-                    console.log(data.total_amount);
+                    // console.log(data.total_amount);
 
                     $("#total").text(data.total_amount);
                     $("#total_amount_side").text(data.total_amount);
@@ -469,6 +477,7 @@
 
 
         }
+
         function test_cart() {
 
             $('.my_cart_item').off("click").on('click', function (e) {
@@ -539,7 +548,6 @@
                                 $('#all-products').append('<div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">  <div class="" id="' + value.id + '" data-id="' + value.id + '"> <img src="' + value.product_image + '" alt="">   <div class="product-info text-center"> <a href="#"> <h6>' + value.product_name + '</h6></a>  <small>' + value.quantity + '</small><br><strong>৳ ' + value.price + '</strong>   </div>  <div class="product_cart" id="' + value.id + '" data-id="' + value.id + '"> <div style="display: none" id="item-plus-minus-' + value.id + '" data-id="' + value.id + '" class="cart-plus-minus">   <div class="plus-minus d-flex test">    <button class="page-minus" id="product-minus-' + value.id + '"><strong class="d-flex align-items-center justify-content-center">-</strong></button>        <p class="d-flex align-items-center justify-content-center">  <span id="product-item-quantity-' + value.id + '" class="product-item-quantity">0 </span> in Cart</p> <button id="product-plus-' + value.id + '" class="page-plus"> <strong class="d-flex align-items-center justify-content-center">+</strong></button> </div></div>  <input type="hidden" name="product_id" id="product_id" value="' + value.id + '"> <button type="button" id="item-zero-' + value.id + '" data-id="' + value.id + '" class="yellow-btn cart-add">Add to cart</button>   </div>   </div> </div>');
                             });
                             cartTotal();
-
 
 
                             $.each(data.products, function (key, value) {
@@ -670,7 +678,7 @@
 
                         });
 
-                        $('.product_cart').on('click',function (e) {
+                        $('.product_cart').on('click', function (e) {
 
 
                             // e.preventDefault();
@@ -745,8 +753,7 @@
 
                                         })
 
-                                    }
-                                    else if (data.status === "order_created_after_first_order") {
+                                    } else if (data.status === "order_created_after_first_order") {
                                         // $('#modal_cart_items').empty();
                                         cartTotal();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
@@ -796,8 +803,7 @@
 
                                         })
 
-                                    }
-                                    else if (data.status === "existing_updated") {
+                                    } else if (data.status === "existing_updated") {
                                         cartTotal();
                                         $('#item' + data.cart_product.id).empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
@@ -881,9 +887,27 @@
 
                     // console.log(data.products);
                     // cartTotal();
+
+
                     $.each(data.products, function (key, value) {
 
+                        if (value.cart_product !== null) {
+                            // console.log(value.cart_product.product_id, value.id);
+                            if (value.cart_product.product_id === value.id) {
+                                let item = cartItemsAdd[key];
+                                item.style.display = "none";
+                                // console.log(value.id);
+                                document.getElementById("item-plus-minus-" + value.id).style.display = "block";
+                                const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
+                                const quantityNumber = parseInt(quantity);
+                                updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
+
+
+                            }
+                        }
+
                         cartItemsAdd[key].onclick = function () {
+
                             let item = cartItemsAdd[key];
                             item.style.display = "none";
                             // console.log(value.id);

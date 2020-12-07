@@ -23,5 +23,6 @@ class Product extends Model
 
 //        return $this->belongsTo(CartProduct::class,'id','product_id');
         return $this->belongsTo(CartProduct::class,'id','product_id');
+
     }
 }

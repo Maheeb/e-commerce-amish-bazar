@@ -13,6 +13,7 @@ class CartController extends Controller
     public function get_products()
     {
         $products = Product::with('cart_product')->get();
+//        dd($products);
 
         return response()->json([
 
