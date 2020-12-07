@@ -1,7 +1,7 @@
 <div class="fixed-top">
     <nav class="navbar navbar-expand-md navbar-light bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><img src="{{asset('frontend/images/logos/logo.png')}}" alt=""></a>
+            <a class="navbar-brand" href="{{route('home-page.index')}}"><img src="{{asset('frontend/images/logos/logo.png')}}" alt=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">

@@ -101,180 +101,117 @@
         </div>
     </div>
 
-    <!-- modal cart -->
+{{--    <!-- modal cart -->--}}
 
-    <div class="modal fade" id="cart">
-        <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content">
-                <div class="cart-items">
-                    <br>
-                    <h4 class="text-center">My Cart</h4>
-                    <p></p>
-                    <hr>
-                    <p></p>
-                    <br>
-                    <div class="row modal-button ">
-                        <div class="col-md-1 col-sm-1 col-1"></div>
-                        <div class="col-md-10 col-sm-10 col-10">
-                            <div id="item1">
-                                <div class="row">
-                                    <div class="cart-font col-md-8 col-sm-8 col-8">Chicken Meat</div>
-                                    <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal1">400</span></div>
-                                    <div class="col-md-12 col-sm-10 col-10">
-                                        <p></p>
-                                        <div class="row ">
-                                            <div class="col-md-4 col-sm-4 col-4">
-                                                <p class="single d-flex align-items-center justify-content-center">৳
-                                                    <span id="itemTotal1">200</span>/kg</p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center">
-                                                <p id="cartMinus1"
-                                                   class="cartMinus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/minus.png" alt="">
-                                                </p>
-                                                <p class="items"><span id="itemQuantity1">2</span></p>
-                                                <p id="cartPlus1"
-                                                   class="cartPlus d-flex justify-content-center align-items-center ">
-                                                    <img src="./images/icons/plus.png" alt="">
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-2 col-2">
-                                                <p id="cartCross1"
-                                                   class="cartCross d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/cross.png" alt="">
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                            <div id="item2">
-                                <div class="row">
-                                    <div class="cart-font col-md-8 col-sm-8 col-8">Chicken Meat</div>
-                                    <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal2">400</span></div>
-                                    <div class="col-md-12 col-sm-10 col-10">
-                                        <p></p>
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-4 col-4">
-                                                <p class="single d-flex align-items-center justify-content-center">৳
-                                                    <span id="itemTotal2">200</span>/kg</p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center">
-                                                <p id="cartMinus2"
-                                                   class="cartMinus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/minus.png" alt="">
-                                                </p>
-                                                <p class="items"><span id="itemQuantity2">2</span></p>
-                                                <p id="cartPlus2"
-                                                   class="cartPlus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/plus.png" alt="">
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-2 col-2">
-                                                <p id="cartCross2"
-                                                   class="cartCross d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/cross.png" alt="">
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                            <div id="item3">
-                                <div class="row">
-                                    <div class="cart-font col-md-8 col-sm-8 col-8">Chicken Meat</div>
-                                    <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal3">400</span></div>
-                                    <div class="col-md-12 col-sm-10 col-10">
-                                        <p></p>
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-4 col-4">
-                                                <p class="single d-flex align-items-center justify-content-center">৳
-                                                    <span id="itemTotal3">200</span>/kg</p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center">
-                                                <p id="cartMinus3"
-                                                   class="cartMinus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/minus.png" alt="">
-                                                </p>
-                                                <p class="items"><span id="itemQuantity3">2</span></p>
-                                                <p id="cartPlus3"
-                                                   class="cartPlus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/plus.png" alt="">
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-2 col-2">
-                                                <p id="cartCross3"
-                                                   class="cartCross d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/cross.png" alt="">
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                            <div id="item4">
-                                <div class="row">
-                                    <div class="cart-font col-md-8 col-sm-8 col-8">Chicken Meat</div>
-                                    <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal4">400</span></div>
-                                    <div class="col-md-12 col-sm-10 col-10">
-                                        <p></p>
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-4 col-4">
-                                                <p class="single d-flex align-items-center justify-content-center">৳
-                                                    <span id="itemTotal4">200</span>/kg</p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center">
-                                                <p id="cartMinus4"
-                                                   class="cartMinus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/minus.png" alt="">
-                                                </p>
-                                                <p class="items"><span id="itemQuantity4">2</span></p>
-                                                <p id="cartPlus4"
-                                                   class="cartPlus d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/plus.png" alt="">
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 col-sm-2 col-2">
-                                                <p id="cartCross4"
-                                                   class="cartCross d-flex align-items-center justify-content-center">
-                                                    <img src="./images/icons/cross.png" alt="">
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id='no-items' class="text-center">
-                                <h5>No Items in Cart</h5>
-                            </div>
-                        </div>
-                        <div class="col-md-1"></div>
+{{--    <div class="modal fade" id="cart">--}}
+{{--        <div class="modal-dialog modal-dialog-centered modal-md">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="cart-items">--}}
+{{--                    <br>--}}
+{{--                    <h4 class="text-center">My Cart</h4>--}}
+{{--                    <p></p>--}}
+{{--                    <hr>--}}
+{{--                    <p></p>--}}
+{{--                    <br>--}}
+{{--                    <div class="row modal-button ">--}}
+{{--                        <div class="col-md-1 col-sm-1 col-1"></div>--}}
+{{--                        <div id="modal_cart_items" class="col-md-10 col-sm-10 col-10 cart_item_class">--}}
 
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        <div class="col-md-1 col-sm- col-1"></div>
-                        <div class="col-md-10 col-sm-10 col-10">
-                            <div class="cart-font d-flex justify-content-between">
-                                <p>Gross Total</p>
-                                <p>৳ <span id="total">1600</span></p>
-                            </div>
-                            <br>
-                            <div class="text-center">
-                                <button class="yellow-btn">Checkout</button>
-                            </div>
-                            <br>
-                        </div>
-                        <div class="col-md-1"></div>
-                    </div>
-                    <br>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--                            @foreach($cart_items as $item)--}}
+
+
+{{--                                <div class="all_cart_items" id="item{{$item->id}}"--}}
+{{--                                     data-id="all_items_cart_id{{$item->id}}">--}}
+{{--                                    <div class="row">--}}
+{{--                                        <div--}}
+
+{{--                                            class="cart-font col-md-8 col-sm-8 col-8">{{$item->product->product_name}}</div>--}}
+{{--                                        <div class="col-md-4 col-sm-4 col-4">৳--}}
+{{--                                            <span--}}
+
+{{--                                                id="subTotal{{$item->id}}">{{number_format($item->product->price*$item->product_quantity)}}</span>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-md-12 col-sm-10 col-10 ">--}}
+{{--                                            <p></p>--}}
+{{--                                            <div class="row ">--}}
+{{--                                                <div class="col-md-4 col-sm-4 col-4">--}}
+{{--                                                    <p class="single d-flex align-items-center justify-content-center">--}}
+{{--                                                        ৳--}}
+
+{{--                                                        <span--}}
+{{--                                                            id="itemTotal1">{{$item->product->price}}</span>/kg--}}
+{{--                                                    </p>--}}
+{{--                                                </div>--}}
+{{--                                                <div--}}
+{{--                                                    class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item"--}}
+{{--                                                    data-id="{{$item->product_id}}">--}}
+{{--                                                    <p id="cartMinus{{$item->id}}"--}}
+{{--                                                       class="cartMinus d-flex align-items-center justify-content-center">--}}
+{{--                                                        <img src="{{ asset('frontend/images/icons/minus.png') }}"--}}
+{{--                                                             alt="">--}}
+{{--                                                    </p>--}}
+{{--                                                    <p class="items"><span--}}
+{{--                                                            class="cart_quantity"--}}
+{{--                                                            id="item_quantity-{{$item->id}}">{{$item->product_quantity}}</span>--}}
+{{--                                                    </p>--}}
+
+
+{{--                                                    <p id="cartPlus{{$item->id}}"--}}
+{{--                                                       class="cartPlus d-flex justify-content-center align-items-center ">--}}
+{{--                                                        <img src="{{ asset('frontend/images/icons/plus.png') }}"--}}
+{{--                                                             alt="">--}}
+{{--                                                    </p>--}}
+
+
+{{--                                                </div>--}}
+{{--                                                <div class="col-md-4 col-sm-2 col-2">--}}
+{{--                                                    <p id="cartCross{{$item->id}}"--}}
+{{--                                                       class="d-flex align-items-center justify-content-center cartCross"--}}
+{{--                                                       data-id="{{$item->id}}">--}}
+{{--                                                        <img src="{{ asset('frontend/images/icons/cross.png') }}"--}}
+{{--                                                             alt="">--}}
+{{--                                                    </p>--}}
+{{--                                                    <input type="hidden" data-id="{{$item->cart_id}}"--}}
+{{--                                                           id="hidden_cart_id">--}}
+{{--                                                </div>--}}
+
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <hr>--}}
+{{--                                </div>--}}
+
+
+{{--                            @endforeach--}}
+
+{{--                            <div id='no-items' class="text-center">--}}
+{{--                                --}}{{--                                <h5>No Items in Cart</h5>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-1"></div>--}}
+
+{{--                        <div class="col-md-12">--}}
+{{--                            <hr>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-1 col-sm- col-1"></div>--}}
+{{--                        <div class="col-md-10 col-sm-10 col-10">--}}
+{{--                            <div class="cart-font d-flex justify-content-between">--}}
+{{--                                <p>Gross Total</p>--}}
+{{--                                <p>৳ <span id="total">{{$total_amount}}</span></p>--}}
+{{--                            </div>--}}
+{{--                            <br>--}}
+{{--                            <div class="text-center">--}}
+{{--                                <button class="yellow-btn">Checkout</button>--}}
+{{--                            </div>--}}
+{{--                            <br>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-1"></div>--}}
+{{--                    </div>--}}
+{{--                    <br>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <!-- introduction -->
 

@@ -1,7 +1,11 @@
 @extends('frontend_shop_page_layout')
 @section('page_level_style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 @endsection
 @section('content')
+
     <header>
 
         <!-- navbar -->
@@ -52,7 +56,11 @@
         </div>
 
     </header>
+
+    <br><br>
+
     <main>
+
         <!-- Modal -->
 
         <!-- modal login -->
@@ -241,155 +249,292 @@
             </div>
         </div>
 
-        <!-- fixed icon -->
+        <!-- single blog -->
 
-        <div class="fix">
-            <a data-toggle="modal" data-target="#cart">
-                <img src="{{asset('frontend/images/icons/fix.png')}}" alt="">
-                <div class="fix-info">
-{{--                    <p>50 Items</p>--}}
-{{--                    <h6>৳ 45000</h6>--}}
-                    <p><span id="total_cart_item">{{$cart_count}} </span> Item</p>
-                    <h6>৳ <span id="total_amount_side">{{$total_amount}}</span></h6>
-                </div>
-            </a>
-        </div>
-
-        <!-- all products -->
-
-        <div class="container-fluid shop-products">
-
-            <!-- sidebar -->
-
-            <div id="see-side" class="see-side">
-                <!-- <div id="mySidenav" class="sidenav"> -->
-                <div id="custom" class="custom">
-                    <a href="" class="menu d-flex align-items-center">
-                        <p></p>
-                        <img src="{{asset('frontend/images/icons/coronavirus.png')}}" alt="">
-                        <p>COVID-19 Protections</p>
-                    </a>
-
-
-
-                    @foreach($categories as $cat_item)
-                        <a href="" data-id="{{$cat_item->id}}" class="menu d-flex align-items-center sidebar_category">
-                            <p></p>
-                            <img style="width: 70px;height: 70px"
-                                 src="{{ asset('frontend/images/'.$cat_item->category_image)  }}" alt="">
-
-                            <p>{{$cat_item->category_name}}</p>
-                        </a>
-                    @endforeach
-{{--                    <a href="" class="side-menu-last menu d-flex align-items-center">--}}
-{{--                        <p></p>--}}
-{{--                        <img src="{{asset('frontend/images/icons/fish.png')}}" alt="">--}}
-{{--                        <p>Fish</p>--}}
-{{--                    </a>--}}
-                    <br>
-                    <div id="range" class="range">
-                        <h6>Price Range</h6>
-                        <input type="range" id="myinput" min="200" max="1000">
-                        <br>
-                        <small>৳ 200 - 1000</small>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- products -->
-
-            <div id="all-products" class="row all-products products">
-                @foreach($products as $product)
-
-                    <div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">
-
-
-{{--                        <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">--}}
-                        <div class="" id="{{ $product->id }}" data-id="{{$product->id}}">
-                            <img src="{{ asset($product->product_image) }}" alt="">
-                            <div class="product-info text-center special_info">
-                                <a href="{{route('single_product.get',$product->id)}}">
-                                    <h6>{{ $product->product_name }}</h6>
-                                </a>
-                                <small>{{ $product->quantity }}</small>
-                                <br>
-                                <strong>৳ {{ $product->price }}</strong>
-
-                            </div>
-
-                            <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">
-                            <div style="display: none" id="item-plus-minus-{{$product->id}}"
-                                 data-id="{{$product->id}}"
-                                 class="cart-plus-minus">
-
-                                <div class="plus-minus d-flex test">
-                                    <button class="page-minus" id="product-minus-{{$product->id}}">
-                                        <strong class="d-flex align-items-center justify-content-center">-</strong>
-                                    </button>
-                                    <p class="d-flex align-items-center justify-content-center">
-                                    <span id="product-item-quantity-{{$product->id}}"
-                                          class="product-item-quantity">0</span> in Cart
-
-                                    </p>
-
-                                    <button id="product-plus-{{$product->id}}" class="page-plus">
-                                        <strong class="d-flex align-items-center justify-content-center">+</strong>
-                                    </button>
+        <section>
+            <div class="container-fluid">
+                <div class="single-product w-90">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="main-image" src="{{ asset($product->product_image) }}" alt="">
+                            <div class="owl-carousel">
+                                <div class="item">
+                                    <img class="sub-images" src="{{ asset($product->product_image) }}" alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="sub-images" src="{{ asset($product->product_image) }}" alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="sub-images" src="{{ asset($product->product_image) }}" alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="sub-images" src="{{ asset($product->product_image) }}" alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="sub-images" src="{{ asset($product->product_image) }}" alt="">
                                 </div>
 
                             </div>
-
-
-                            <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
-                            <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
-                                    class="yellow-btn cart-add">
-                                Add to cart
-                            </button>
                         </div>
+                        <div class="col-md-6">
+                            <h6>{{ $product->product_name }}</h6>
+                            <small>
+                                {{ $product->description }}
+                            </small>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-4">
+                                    <p class="single d-flex align-items-center justify-content-center">৳
+                                        <span id="itemTotal">   {{ $product->price }}</span>/kg</p>
+                                </div>
+{{--                                <div class="col-md-6 col-sm-6 col-6 d-flex align-items-center">--}}
+{{--                                    <p id="minus" class="cartMinus d-flex align-items-center justify-content-center">--}}
+{{--                                        <img src="./images/icons/minus.png" alt="">--}}
+{{--                                    </p>--}}
+{{--                                    <p class="items"><span id="itemQuantity">1</span></p>--}}
+{{--                                    <p id="plus" class="cartPlus d-flex align-items-center justify-content-center">--}}
+{{--                                        <img src="./images/icons/plus.png" alt="">--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+                            </div>
+                            <hr>
+                            <p>- Lorem ipsum dolor sit amet <br>
+                                - Consectetur adipiscing elit <br>
+                                - Non nulla arcu habitant.</p>
 
+{{--                            <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">--}}
+{{--                                <div style="display: none" id="item-plus-minus-{{$product->id}}"--}}
+{{--                                     data-id="{{$product->id}}"--}}
+{{--                                     class="cart-plus-minus">--}}
+
+{{--                                    <div class="plus-minus d-flex test">--}}
+{{--                                        <button class="page-minus" id="product-minus-{{$product->id}}">--}}
+{{--                                            <strong class="d-flex align-items-center justify-content-center">-</strong>--}}
+{{--                                        </button>--}}
+{{--                                        <p class="d-flex align-items-center justify-content-center">--}}
+{{--                                    <span id="product-item-quantity-{{$product->id}}"--}}
+{{--                                          class="product-item-quantity">0</span> in Cart--}}
+
+{{--                                        </p>--}}
+
+{{--                                        <button id="product-plus-{{$product->id}}" class="page-plus">--}}
+{{--                                            <strong class="d-flex align-items-center justify-content-center">+</strong>--}}
+{{--                                        </button>--}}
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+
+
+{{--                                <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">--}}
+{{--                                <div class="view-all yellow-sh">--}}
+{{--                                <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"--}}
+{{--                                        class="yellow-btn cart-add">--}}
+{{--                                    Add to cart--}}
+{{--                                </button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+{{--                            <div class="view-all yellow-sh">--}}
+{{--                                <button class="yellow-btn">Add to Cart</button>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
 
-                @endforeach
 
-
-                {{--            <div class="col-md-12">--}}
-                {{--                <div class="pagination-custom text-center">--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>1</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a class="red" href="">--}}
-                {{--                        <p>2</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>3</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>...</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>20</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>21</p>--}}
-                {{--                    </a>--}}
-                {{--                    <a href="">--}}
-                {{--                        <p>22</p>--}}
-                {{--                    </a>--}}
-                {{--                </div>--}}
-                {{--            </div>--}}
+                </div>
+                <br>
+                <hr>
             </div>
-        </div>
+        </section>
+
+        <!-- customer review -->
+
+        <section>
+            <section>
+                <div class="container-fluid w-90">
+                    <br>
+                    <h5>Customer Reviews</h5>
+                    <p></p>
+                    <div class="total-review">
+                        <div class="d-flex">
+                            <p>5 Stars</p>
+                            <div class="line"></div>
+                        </div>
+                        <div class="d-flex">
+                            <p>4 Stars</p>
+                            <div class="line2"></div>
+                        </div>
+                        <div class="d-flex">
+                            <p>3 Stars</p>
+                            <div class="line"></div>
+                        </div>
+                        <div class="d-flex">
+                            <p>2 Stars</p>
+                            <div class="line3"></div>
+                        </div>
+                        <div class="d-flex">
+                            <p>1 Stars</p>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </section>
+            <!--  -->
+            <section>
+                <div class="container-fluid w-90">
+                    <div class="review ">
+                        <div class=" d-flex justify-content-between">
+                            <div class="">
+                                <h6>Saimam Hasan</h6>
+                                <div class="rate">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
+                            <small>4 June, 2020</small>
+                        </div>
+                        <p></p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa lacinia mauris ullamcorper non
+                            nunc risus nisl. Odio vitae porttitor euismod lectus scelerisque. Tellus nulla elit placerat
+                            curabitur laoreet elit malesuada viverra neque. Vel felis tortor velit quisque dolor enim at
+                            varius leo. In ultrices ac eu nec lacus eget nulla vestibulum, augue. Enim mauris, lorem
+                            bibendum condimentum porta aenean at. Blandit nisi.</p>
+                    </div>
+                    <br>
+                    <div class="review">
+                        <div class=" d-flex justify-content-between">
+                            <div class="">
+                                <h6>Suva Karmaker</h6>
+                                <div class="rate">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
+                            <small>4 June, 2020</small>
+                        </div>
+                        <p></p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa lacinia mauris ullamcorper non
+                            nunc risus nisl. Odio vitae porttitor euismod lectus scelerisque. Tellus nulla elit placerat
+                            curabitur laoreet elit malesuada viverra neque. Vel felis tortor velit quisque dolor enim at
+                            varius leo. In ultrices ac eu nec lacus eget nulla vestibulum, augue. Enim mauris, lorem
+                            bibendum condimentum porta aenean at. Blandit nisi.</p>
+                        <div class="small-pic">
+                            <img src="{{asset('frontend/images/blogs/blog4_1.png')}}" alt="">
+                            <img src="{{asset('frontend/images/blogs/blog4_2.png')}}" alt="">
+                            <img src="{{asset('frontend/images/blogs/blog4_1.png')}}" alt="">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="review">
+                        <div class=" d-flex justify-content-between">
+                            <div class="">
+                                <h6>Suva Karmaker</h6>
+                                <div class="rate">
+                                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                                </div>
+                            </div>
+                            <small>4 June, 2020</small>
+                        </div>
+                        <p></p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa lacinia mauris ullamcorper non
+                            nunc risus nisl. Odio vitae porttitor euismod lectus scelerisque. Tellus nulla elit placerat
+                            curabitur laoreet elit malesuada viverra neque. Vel felis tortor velit quisque dolor enim at
+                            varius leo. In ultrices ac eu nec lacus eget nulla vestibulum, augue. Enim mauris, lorem
+                            bibendum condimentum porta aenean at. Blandit nisi.</p>
+
+                    </div>
+                    <br><br>
+                    <hr>
+                </div>
+            </section>
+        </section>
+
+        <br><br>
+
+        <!-- related products -->
+
+        <section>
+            <div class="container-fluid">
+                <div class="products">
+                    <div class="row">
+                        <div class="row">
+                            @foreach($products as $product)
+                                <div class="col-md-4 col-lg-3 col-12 col-sm-6 col-xl-2">
+                                    <div class="" id="{{ $product->id }}" data-id="{{$product->id}}">
+                                        <img src="{{ asset($product->product_image) }}" alt="">
+                                        <div class="product-info text-center">
+                                            <a href="#">
+                                                <h6>{{ $product->product_name }}</h6>
+                                            </a>
+                                            <small>{{ $product->quantity }}</small>
+                                            <br>
+                                            <strong>৳ {{ $product->price }}</strong>
+                                        </div>
+                                        <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">
+                                            <div style="display: none" id="item-plus-minus-{{$product->id}}" class="cart-plus-minus"
+                                                 data-id="{{$product->id}}">
+                                                <div class="plus-minus d-flex ">
+                                                    <button id="product-minus-{{$product->id}}" class="page-minus"><strong
+                                                            class="d-flex align-items-center justify-content-center">-</strong></button>
+                                                    <p class="d-flex align-items-center justify-content-center"><span
+                                                            class="product-item-quantity"
+                                                            id="product-item-quantity-{{$product->id}}">0</span> in Cart
+                                                    </p>
+                                                    <button id="product-plus-{{$product->id}}" class="page-plus"><strong
+                                                            class="d-flex align-items-center justify-content-center">+</strong></button>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                                            <button id='item-zero-{{$product->id}}' data-id="{{ $product->id }}" class="yellow-btn cart-add">Add to cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="view-all yellow-sh text-center">
+                    <br><br>
+                    <button class="text-center yellow-btn blog-anchor"><a href="{{route('shop-page.index')}}">View all Products</a>
+                    </button>
+                </div>
+            </div>
+        </section>
 
     </main>
+
+
+
+
 @endsection
 
+
+<!-- js script -->
 @section('page_plugin_script')
+    {{--<script src="./js/cart.js"></script>--}}
+{{--    <script src="{{asset('frontend/js/single-product-js.js')}}"></script>--}}
+{{--    <script src="{{asset('frontend/js/add-to-cart.js')}}"></script>--}}
+{{--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"--}}
+{{--            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"--}}
+{{--            crossorigin="anonymous">--}}
+{{--    </script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"--}}
+{{--            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"--}}
+{{--            crossorigin="anonymous">--}}
+{{--    </script>--}}
+{{--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"--}}
+{{--            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"--}}
+{{--            crossorigin="anonymous">--}}
+{{--    </script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{{asset('frontend/js/single-product-carousel.js')}}">
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
             integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
             crossorigin="anonymous"></script>
+
 @endsection
 
 @section('page_level_script')
@@ -514,92 +659,9 @@
 
             test_cart();
             modal_operation();
-            sidebar_category();
 
             //
-            function sidebar_category() {
 
-                $('.sidebar_category').click(function (e) {
-                    e.preventDefault();
-                    var category_id = $(this).data('id');
-
-                    $.ajax({
-                        url: config.routes.category_wise_product,
-                        type: "get",
-                        data: {
-
-                            category_id: category_id
-                        },
-
-                        success: function (data) {
-
-                            $('#all-products').empty();
-                            $.each(data.products, function (key, value) {
-
-                                $('#all-products').append('<div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">  <div class="" id="' + value.id + '" data-id="' + value.id + '"> <img src="' + value.product_image + '" alt="">   <div class="product-info text-center"> <a href="#"> <h6>' + value.product_name + '</h6></a>  <small>' + value.quantity + '</small><br><strong>৳ ' + value.price + '</strong>   </div>  <div class="product_cart" id="' + value.id + '" data-id="' + value.id + '"> <div style="display: none" id="item-plus-minus-' + value.id + '" data-id="' + value.id + '" class="cart-plus-minus">   <div class="plus-minus d-flex test">    <button class="page-minus" id="product-minus-' + value.id + '"><strong class="d-flex align-items-center justify-content-center">-</strong></button>        <p class="d-flex align-items-center justify-content-center">  <span id="product-item-quantity-' + value.id + '" class="product-item-quantity">0 </span> in Cart</p> <button id="product-plus-' + value.id + '" class="page-plus"> <strong class="d-flex align-items-center justify-content-center">+</strong></button> </div></div>  <input type="hidden" name="product_id" id="product_id" value="' + value.id + '"> <button type="button" id="item-zero-' + value.id + '" data-id="' + value.id + '" class="yellow-btn cart-add">Add to cart</button>   </div>   </div> </div>');
-                            });
-                            cartTotal();
-
-
-
-                            $.each(data.products, function (key, value) {
-
-                                cartItemsAdd[key].onclick = function () {
-                                    let item = cartItemsAdd[key];
-                                    item.style.display = "none";
-                                    // console.log(value.id);
-                                    document.getElementById("item-plus-minus-" + value.id).style.display = "block";
-                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
-                                    const quantityNumber = parseInt(quantity);
-                                    updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
-                                }
-                            });
-
-
-                            $.each(data.products, function (key, value) {
-
-                                cartPlus[key].onclick = function () {
-                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
-                                    const quantityNumber = parseInt(quantity);
-                                    updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
-                                }
-                            });
-
-
-                            $.each(data.products, function (key, value) {
-
-                                cartMinus[key].onclick = function () {
-                                    let item = cartMinus[key];
-                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
-                                    const quantityNumber = parseInt(quantity);
-                                    if (quantity > 1) {
-                                        updatedQuantity(("product-item-quantity-" + value.id), -1, quantityNumber);
-                                    } else {
-                                        updatedQuantity(("product-item-quantity-" + value.id), -1, quantityNumber);
-                                        document.getElementById("item-plus-minus-" + value.id).style.display = "none";
-                                        document.getElementById("item-zero-" + value.id).style.display = "block";
-                                    }
-                                }
-                            });
-
-
-                            modal_operation();
-
-
-                        },
-
-
-                        error: function (data, errorThrown) {
-
-
-                        }
-                    })
-
-
-                });
-
-
-            }
 
 
             function modal_operation() {
@@ -699,7 +761,7 @@
                                         cartTotal();
                                         // $('#modal_cart_items').empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
 
                                         cartCross();
                                         test_cart();
@@ -750,7 +812,7 @@
                                         // $('#modal_cart_items').empty();
                                         cartTotal();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
                                         cartCross();
                                         test_cart();
 
@@ -801,7 +863,7 @@
                                         cartTotal();
                                         $('#item' + data.cart_product.id).empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#item' + data.cart_product.id).replaceWith('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p> <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">   </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#item' + data.cart_product.id).replaceWith('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p> <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">   </div>      </div>               </div>                       </div>       <hr>         </div>');
                                         cartCross();
                                         test_cart();
 
@@ -868,6 +930,8 @@
             const cartMinus = document.getElementsByClassName('page-minus');
             const cartPlus = document.getElementsByClassName('page-plus');
             const cartItemsAdd = document.getElementsByClassName('cart-add');
+
+            // console.log(cartItemsAdd);
 
             // const cartModalPlus = document.getElementsByClassName('cartPlus');
 
@@ -984,6 +1048,4 @@
 
 
     </script>
-
-
 @endsection

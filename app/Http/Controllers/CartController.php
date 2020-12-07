@@ -25,6 +25,7 @@ class CartController extends Controller
     {
 
         $product_quantity = (int)$request->product_quantity;
+//        dd($product_quantity);
 
         if ($product_quantity == null) {
             $product_quantity = 1;
@@ -131,6 +132,36 @@ class CartController extends Controller
 
 
     }
+
+
+    public function get_cart_total()
+    {
+
+        $cart_items = CartProduct::with('product')->get();
+
+
+//        $cart_count = CartProduct::count();
+
+        $total_amount = 0;
+
+        $total_item_in_cart = CartProduct::count();
+
+        foreach ($cart_items as $item) {
+
+            $total_amount += $item->product_quantity * $item->product->price;
+
+        }
+
+        return response()->json([
+
+            "total_amount" => $total_amount,
+            "total_item_in_cart" => $total_item_in_cart
+        ]);
+
+
+    }
+
+
 
     public function destroy(Request $request)
     {
