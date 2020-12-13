@@ -37,12 +37,30 @@
                                     </button>
                                     {{--                                    <div class="red-dot"></div>--}}
                                 </a>
-                                <a class="nav-link">
-                                    <button data-toggle="modal" data-target="#login"
-                                            class="people-image yellow-btn d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('frontend/images/icons/people.png')}}" alt="">
-                                    </button>
-                                </a>
+
+                                @if(  Auth::user() ==null)
+                                    <a class="nav-link">
+                                        <button data-toggle="modal" data-target="#login"
+                                                class="people-image yellow-btn d-flex align-items-center justify-content-center">
+                                            <img src="{{asset('frontend/images/icons/people.png')}}" alt="">
+                                        </button>
+                                    </a>
+                                @else
+
+
+                                    <div class="dropdown mt-2 show">
+                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                            {{Auth::user()->name}}
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
+
+                                        </div>
+                                    </div>
+                                @endif
                             </li>
                         </ul>
 
@@ -66,12 +84,34 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12 modal-button text-center">
-                                    <form action="">
-                                        <input class="form-control" type="email" placeholder="Email Address">
+                                    {{--                                    <form action="">--}}
+                                    <form method="POST" action="{{ route('login') }}">
+                                        @csrf
+                                        {{--                                        <input class="form-control" type="email" placeholder="Email Address">--}}
+                                        <input id="email" type="email"
+                                               class="form-control @error('email') is-invalid @enderror" name="email"
+                                               value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
                                         <p></p>
-                                        <input class="form-control" type="password" placeholder="Password">
+                                        {{--                                        <input class="form-control" type="password" placeholder="Password">--}}
+                                        <input id="password" type="password"
+                                               class="form-control @error('password') is-invalid @enderror"
+                                               name="password" required autocomplete="current-password">
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
                                         <br>
-                                        <button type="button" class="yellow-btn">Log In</button>
+                                        {{--                                        <button type="button" class="yellow-btn">Log In</button>--}}
+                                        <button type="submit" class="yellow-btn">
+                                            {{ __('Login') }}
+                                        </button>
+                                        {{--                                    </form>--}}
                                     </form>
                                     <br>
                                     <br>
@@ -96,33 +136,81 @@
                             nulla arcu habitant
                             sollicitudin.</p>
                         <br>
-                        <form action="">
-                            <div class="container-fluid">
-                                <div class="row modal-button">
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="email" placeholder="Email Address">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="text" placeholder="Username">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="text" placeholder="Your Name">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="text" placeholder="Address">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="password" placeholder="Password">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-12">
-                                        <input class="form-control" type="password" placeholder="Confirm Password">
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        <button type="button" class="yellow-btn">Register</button>
-                                    </div>
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+                        <div class="container-fluid">
+                            <div class="row modal-button">
+
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="email" placeholder="Email Address">--}}
+                                    <input id="email_2" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
+
+                                    @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
-                                <br>
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="text" placeholder="Username">--}}
+
+                                    <input id="user_name_id" type="text"  placeholder="User Name" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" required autocomplete="User Name" autofocus >
+
+                                    @error('user_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="text" placeholder="Your Name">--}}
+                                    <input id="name" type="text"  placeholder="Your name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus >
+
+                                    @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="text" placeholder="Address">--}}
+
+                                    <input id="address_id" type="text"  placeholder="Address" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}"   autofocus >
+
+                                    @error('address')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="password" placeholder="Password">--}}
+
+                                    <input id="password_2" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="password" required autocomplete="new-password">
+
+                                    @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-12">
+{{--                                    <input class="form-control" type="password" placeholder="Confirm Password">--}}
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="yellow-btn">  {{ __('Register') }}</button>
+                                </div>
+
                             </div>
+                            <br>
+
+
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -228,9 +316,24 @@
                                     <p>৳ <span id="total">{{$total_amount}}</span></p>
                                 </div>
                                 <br>
-                                <div class="text-center">
-                                    <button class="yellow-btn">Checkout</button>
-                                </div>
+
+                                @if( Auth::user()==null)
+                                    <div class="text-center">
+                                        {{--                                    <form action="{{route('home')}}">--}}
+                                        <button data-toggle="modal" data-target="#login" id="checkout_btn"
+                                                class="yellow-btn">Checkout
+                                        </button>
+                                        {{--                                    </form>--}}
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <form action="{{route('home')}}">
+                                            <button class="yellow-btn">Checkout</button>
+                                        </form>
+                                    </div>
+
+                                @endif
+
                                 <br>
                             </div>
                             <div class="col-md-1"></div>
@@ -301,7 +404,8 @@
             <div id="all-products" class="row all-products products">
                 @foreach($products as $product)
 
-                    <div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">
+                    {{--                    <div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">--}}
+                    <div id="single_product_id{{$product->id}}" class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">
 
 
                         {{--                        <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">--}}
@@ -392,6 +496,12 @@
             </div>
         </div>
 
+        @if(Auth::user())
+            <input type="hidden" id="hidden_user_id" data-id="{{Auth::user()->id}}" value="{{Auth::user()->id}}">
+
+        @else
+            <input type="hidden" id="hidden_user_id" data-id="null" value="null">
+        @endif
     </main>
 @endsection
 
@@ -443,6 +553,11 @@
 
                     success: function (data) {
                         cartTotal();
+                        $('#single_product_id' + data.product.id).empty();
+
+                        $('#single_product_id' + data.product.id).replaceWith('<div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3" id="#single_product_id ' + data.product.id + '">  <div class="" id="' + data.product.id + '" data-id="' + data.product.id + '"> <img src="' + data.product.product_image + '" alt="">   <div class="product-info text-center"> <a href="#"> <h6>' + data.product.product_name + '</h6></a>  <small>' + data.product.quantity + '</small><br><strong>৳ ' + data.product.price + '</strong>   </div>  <div class="product_cart" id="' + value.id + '" data-id="' + data.product.id + '"> <div style="display: none" id="item-plus-minus-' + data.product.id + '" data-id="' + data.product.id + '" class="cart-plus-minus">   <div class="plus-minus d-flex test">    <button class="page-minus" id="product-minus-' + data.product.id + '"><strong class="d-flex align-items-center justify-content-center">-</strong></button>        <p class="d-flex align-items-center justify-content-center">  <span id="product-item-quantity-' + data.product.id + '" class="product-item-quantity">0 </span> in Cart</p> <button id="product-plus-' + data.product.id + '" class="page-plus"> <strong class="d-flex align-items-center justify-content-center">+</strong></button> </div></div>  <input type="hidden" name="product_id" id="product_id" value="' + data.product.id + '"> <button type="button" id="item-zero-' + data.product.id + '" data-id="' + data.product.id + '" class="yellow-btn cart-add">Add to cart</button>   </div>   </div> </div>');
+
+
                     },
                     error: function (data, errorThrown) {
 
@@ -526,6 +641,19 @@
             sidebar_category();
 
             //
+
+            $('#checkout_btn').on('click', function () {
+
+                var user_id = $('#hidden_user_id').data('id');
+
+                console.log(user_id);
+                if (user_id == null) {
+                    $('#cart').hide();
+
+                }
+            });
+
+
             function sidebar_category() {
 
                 $('.sidebar_category').click(function (e) {

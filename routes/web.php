@@ -30,3 +30,34 @@ Route::get('/cart-items-total','CartController@get_cart_total')->name('cart-item
 
 Route::get('/category-wise-product','AmishbazarController@category_wise_product')->name('category_wise_product.get');
 Route::get('/single-product/{id}','AmishbazarController@sngle_product_page')->name('single_product.get');
+Route::get('/home-page-category-wise-product/{id}','AmishbazarController@category_wise_product_home_page')->name('home_category_product.get');
+
+Route::get('/home-category-get-product','CartController@home_category_get_products')->name('category.home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+Route::get('/example2', 'AmishbazarController@custom_checkout')->name('example2');
+Route::post('/payment-post', 'AmishbazarController@payment_post')->name('payment.post');
+
+// SSLCOMMERZ Start
+
+//Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout')->name('example1');
+//
+//Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout')->name('example2');
+//
+//
+//Route::post('/pay', 'SslCommerzPaymentController@index');
+//
+//Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+//
+//
+//Route::post('/success', 'SslCommerzPaymentController@success');
+//
+//Route::post('/success', 'SslCommerzPaymentController@fail');
+//Route::post('/success', 'SslCommerzPaymentController@cancel');
+//
+//Route::post('/success', 'SslCommerzPaymentController@ipn');
+
+//SSLCOMMERZ END

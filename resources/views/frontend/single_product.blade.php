@@ -475,9 +475,22 @@
                                                 <div class="plus-minus d-flex ">
                                                     <button id="product-minus-{{$product->id}}" class="page-minus"><strong
                                                             class="d-flex align-items-center justify-content-center">-</strong></button>
-                                                    <p class="d-flex align-items-center justify-content-center"><span
-                                                            class="product-item-quantity"
-                                                            id="product-item-quantity-{{$product->id}}">0</span> in Cart
+                                                    <p class="d-flex align-items-center justify-content-center">
+{{--                                                        <span--}}
+{{--                                                            class="product-item-quantity"--}}
+{{--                                                            id="product-item-quantity-{{$product->id}}">0</span> in Cart--}}
+                                                        @if($product->cart_product !==null)
+                                                            @if($product->cart_product->product_id == $product->id)
+                                                                <span id="product-item-quantity-{{$product->id}}"
+                                                                      class="product-item-quantity">{{number_format(($product->cart_product->product_quantity)-1)}}</span>
+                                                                in Cart
+
+                                                            @endif
+
+                                                        @else
+                                                            <span id="product-item-quantity-{{$product->id}}"
+                                                                  class="product-item-quantity">0</span> in Cart
+                                                        @endif
                                                     </p>
                                                     <button id="product-plus-{{$product->id}}" class="page-plus"><strong
                                                             class="d-flex align-items-center justify-content-center">+</strong></button>
@@ -946,6 +959,21 @@
                     // console.log(data.products);
                     // cartTotal();
                     $.each(data.products, function (key, value) {
+
+                        if (value.cart_product !== null) {
+                            // console.log(value.cart_product.product_id, value.id);
+                            if (value.cart_product.product_id === value.id) {
+                                let item = cartItemsAdd[key];
+                                item.style.display = "none";
+                                // console.log(value.id);
+                                document.getElementById("item-plus-minus-" + value.id).style.display = "block";
+                                const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
+                                const quantityNumber = parseInt(quantity);
+                                updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
+
+
+                            }
+                        }
 
                         cartItemsAdd[key].onclick = function () {
                             let item = cartItemsAdd[key];

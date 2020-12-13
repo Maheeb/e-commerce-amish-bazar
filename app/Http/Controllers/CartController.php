@@ -13,6 +13,7 @@ class CartController extends Controller
     public function get_products()
     {
         $products = Product::with('cart_product')->get();
+
 //        dd($products);
 
         return response()->json([
@@ -20,6 +21,18 @@ class CartController extends Controller
             "products" => $products
         ]);
     }
+
+    public function home_category_get_products(Request $request){
+        $category_id = $request->category_id;
+//        dd($category_id);
+        $products = Product::with('cart_product')->where('category_id',$category_id)->get();
+        return response()->json([
+
+            "products" => $products
+        ]);
+
+    }
+
 
     public function product_add_to_cart_operation(Request $request)
 
@@ -167,25 +180,29 @@ class CartController extends Controller
     public function destroy(Request $request)
     {
 
-//        dd($request->cart_id, $request->cart_product_id);
 
         $cart_product_id = CartProduct::find($request->cart_product_id);
+        $find_product_id = $cart_product_id->product_id;
         $cart_product_id->delete();
+
 
         $cart_id_exist = CartProduct::where('cart_id', $request->cart_id)->first();
 
 
         if (is_null($cart_id_exist)) {
 
-                $cart = Cart::find($request->cart_id);
-                $cart->delete();
+            $cart = Cart::find($request->cart_id);
+            $cart->delete();
         }
 
-//        $cart_product_delete = CartProduct::where('cart_id', $request->cart_id)->first();
-//        $cart_product_id = CartProduct::find($cart_product_delete->id);
-//        $cart_product_id->delete();
-//
-//        $cart_id->delete();
+
+
+            $product = Product::with('cart_product')->find($find_product_id);
+            return response()->json([
+
+                "product"=>$product
+            ]);
+
 
 
     }

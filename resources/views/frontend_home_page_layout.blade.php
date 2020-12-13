@@ -15,91 +15,91 @@
 
 <body>
 
-<header>
+{{--<header>--}}
 
-    <!-- navbar -->
+{{--    <!-- navbar -->--}}
 
-   @include('frontend.partials.navbar')
+{{--   @include('frontend.partials.navbar')--}}
 
-</header>
+{{--</header>--}}
 
-<main>
+{{--<main>--}}
 
     <!-- Modal -->
 
     <!-- modal login -->
 
-    <div id="login" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="login">
-                    <h3 class="text-center">Welcome</h3>
-                    <br>
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12 modal-button text-center">
-                                <form action="">
-                                    <input class="form-control" type="email" placeholder="Email Address">
-                                    <p></p>
-                                    <input class="form-control" type="password" placeholder="Password">
-                                    <br>
-                                    <button type="button" class="yellow-btn">Log In</button>
-                                </form>
-                                <br>
-                                <br>
-                                <p class="reg">New here ? <a data-toggle="modal" data-target="#registration"
-                                                             data-dismiss="modal">Create an account</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div id="login" class="modal fade" role="dialog">--}}
+{{--        <div class="modal-dialog modal-dialog-centered">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="login">--}}
+{{--                    <h3 class="text-center">Welcome</h3>--}}
+{{--                    <br>--}}
+{{--                    <div class="container-fluid">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-12 modal-button text-center">--}}
+{{--                                <form action="">--}}
+{{--                                    <input class="form-control" type="email" placeholder="Email Address">--}}
+{{--                                    <p></p>--}}
+{{--                                    <input class="form-control" type="password" placeholder="Password">--}}
+{{--                                    <br>--}}
+{{--                                    <button type="button" class="yellow-btn">Log In</button>--}}
+{{--                                </form>--}}
+{{--                                <br>--}}
+{{--                                <br>--}}
+{{--                                <p class="reg">New here ? <a data-toggle="modal" data-target="#registration"--}}
+{{--                                                             data-dismiss="modal">Create an account</a></p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
-    <!-- modal registration -->
+{{--    <!-- modal registration -->--}}
 
-    <div class="modal fade" id="registration">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="registration">
-                    <h3 class="text-center">Sign Up for Free</h3>
-                    <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br> Non
-                        nulla arcu habitant
-                        sollicitudin.</p>
-                    <br>
-                    <form action="">
-                        <div class="container-fluid">
-                            <div class="row modal-button">
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="email" placeholder="Email Address">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="text" placeholder="Username">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="text" placeholder="Your Name">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="text" placeholder="Address">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="password" placeholder="Password">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-12">
-                                    <input class="form-control" type="password" placeholder="Confirm Password">
-                                </div>
-                                <div class="col-md-12 text-center">
-                                    <button type="button" class="yellow-btn">Register</button>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div class="modal fade" id="registration">--}}
+{{--        <div class="modal-dialog modal-dialog-centered modal-lg">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="registration">--}}
+{{--                    <h3 class="text-center">Sign Up for Free</h3>--}}
+{{--                    <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br> Non--}}
+{{--                        nulla arcu habitant--}}
+{{--                        sollicitudin.</p>--}}
+{{--                    <br>--}}
+{{--                    <form action="">--}}
+{{--                        <div class="container-fluid">--}}
+{{--                            <div class="row modal-button">--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="email" placeholder="Email Address">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="text" placeholder="Username">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="text" placeholder="Your Name">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="text" placeholder="Address">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="password" placeholder="Password">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6 col-sm-6 col-12">--}}
+{{--                                    <input class="form-control" type="password" placeholder="Confirm Password">--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-12 text-center">--}}
+{{--                                    <button type="button" class="yellow-btn">Register</button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <br>--}}
+{{--                        </div>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
 {{--    <!-- modal cart -->--}}
 
@@ -218,7 +218,7 @@
     @yield('content')
 
 
-</main>
+{{--</main>--}}
 <!-- footer -->
 
 @include('frontend.partials.footer')

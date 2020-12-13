@@ -1,18 +1,15 @@
-@extends('frontend_home_page_layout')
+@extends('frontend_shop_page_layout')
 @section('page_level_style')
 @endsection
 @section('content')
-
-
     <header>
 
         <!-- navbar -->
 
-        {{--   @include('frontend.partials.navbar')--}}
-
         <div class="fixed-top">
             <nav class="navbar navbar-expand-md navbar-light bg-white">
                 <div class="container-fluid">
+                    <a id="off-btn"><img src="{{asset('frontend/images/icons/menu.png')}}" alt=""></a>
                     <a class="navbar-brand" href="{{route('home-page.index')}}"><img
                             src="{{asset('frontend/images/logos/logo.png')}}" alt=""></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -20,78 +17,46 @@
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
-                            <li class="nav-item active">
+                            <li class="nav-item ">
                                 <a class="nav-link" href="{{route('home-page.index')}}">Home <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a class="nav-link" href="{{route('shop-page.index')}}">Shop</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('blog-page.index')}}">Blog</a>
                             </li>
-                            <li class="nav-item custom-nav">
-                                @if(  Auth::user() ==null)
-                                    <a class="nav-link">
-                                        <div class="index-login">
-                                            <button data-toggle="modal" data-target="#login" class="yellow-btn">
-                                                <p>Log In</p>
-                                            </button>
-                                        </div>
-                                    </a>
-                                @else
-                                    <div class="dropdown mt-2 show">
-                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
-                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                           aria-expanded="false">
-                                            {{Auth::user()->name}}
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
-
-                                        </div>
-                                    </div>
-                                @endif
-
+                            <li class="nav-item single-line d-flex">
+                                <a class="nav-link cart-show">
+                                    <button data-toggle="modal" data-target="#cart"
+                                            class="cart-image yellow-btn d-flex align-items-center justify-content-center">
+                                        <img src="{{asset('frontend/images/icons/bcart.png')}}" alt="">
+                                    </button>
+                                    {{--                                    <div class="red-dot"></div>--}}
+                                </a>
+                                <a class="nav-link">
+                                    <button data-toggle="modal" data-target="#login"
+                                            class="people-image yellow-btn d-flex align-items-center justify-content-center">
+                                        <img src="{{asset('frontend/images/icons/people.png')}}" alt="">
+                                    </button>
+                                </a>
                             </li>
                         </ul>
+
                     </div>
                 </div>
             </nav>
         </div>
 
-
     </header>
-
-
     <main>
-        <section class="introduction">
-            <div class="container-fluid intro">
-                <div class="row intro-info">
-                    <div class="col-md-1 col-sm-1 col-1 space"></div>
-                    <div class="col-md-10 col-sm-10 col-12">
-                        <h1>From Farm to You</h1>
-                        <p>Get responsibly sourced fresh protein products right at your doorstop.</p>
-
-                        {{--                    <button class='yellow-btn'>Register Now</button>--}}
-
-                        @if(  Auth::user() ==null)
-                            <button data-toggle="modal" data-target="#registration" class='yellow-btn'>Register Now</button>
-                        @else
-                            <button  style="display: none" class='yellow-btn'>Register Now</button>
-                        @endif
-
-
-                    </div>
-                </div>
-            </div>
-            <br>
-        </section>
-
+        <!-- Modal -->
 
         <!-- modal login -->
+        <input type="hidden" name="hidden_category_id" id="hidden_id" data-id="{{$hidden_category_id}}" value="{{$hidden_category_id}}">
 
         <div id="login" class="modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -102,34 +67,12 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12 modal-button text-center">
-                                    {{--                                    <form action="">--}}
-                                    <form method="POST" action="{{ route('login') }}">
-                                        @csrf
-                                        {{--                                        <input class="form-control" type="email" placeholder="Email Address">--}}
-                                        <input id="email" type="email"
-                                               class="form-control @error('email') is-invalid @enderror" name="email"
-                                               value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                        @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
+                                    <form action="">
+                                        <input class="form-control" type="email" placeholder="Email Address">
                                         <p></p>
-                                        {{--                                        <input class="form-control" type="password" placeholder="Password">--}}
-                                        <input id="password" type="password"
-                                               class="form-control @error('password') is-invalid @enderror"
-                                               name="password" required autocomplete="current-password">
-                                        @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
+                                        <input class="form-control" type="password" placeholder="Password">
                                         <br>
-                                        {{--                                        <button type="button" class="yellow-btn">Log In</button>--}}
-                                        <button type="submit" class="yellow-btn">
-                                            {{ __('Login') }}
-                                        </button>
-                                        {{--                                    </form>--}}
+                                        <button type="button" class="yellow-btn">Log In</button>
                                     </form>
                                     <br>
                                     <br>
@@ -154,185 +97,38 @@
                             nulla arcu habitant
                             sollicitudin.</p>
                         <br>
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
+                        <form action="">
                             <div class="container-fluid">
                                 <div class="row modal-button">
-
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="email" placeholder="Email Address">--}}
-                                        <input id="email_2" type="email"
-                                               class="form-control @error('email') is-invalid @enderror" name="email"
-                                               value="{{ old('email') }}" required autocomplete="email"
-                                               placeholder="Email Address">
-
-                                        @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
+                                        <input class="form-control" type="email" placeholder="Email Address">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="text" placeholder="Username">--}}
-
-                                        <input id="user_name_id" type="text" placeholder="User Name"
-                                               class="form-control @error('user_name') is-invalid @enderror"
-                                               name="user_name" value="{{ old('user_name') }}" required
-                                               autocomplete="User Name" autofocus>
-
-                                        @error('user_name')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-
+                                        <input class="form-control" type="text" placeholder="Username">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="text" placeholder="Your Name">--}}
-                                        <input id="name" type="text" placeholder="Your name"
-                                               class="form-control @error('name') is-invalid @enderror" name="name"
-                                               value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                        @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-
+                                        <input class="form-control" type="text" placeholder="Your Name">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="text" placeholder="Address">--}}
-
-                                        <input id="address_id" type="text" placeholder="Address"
-                                               class="form-control @error('address') is-invalid @enderror"
-                                               name="address" value="{{ old('address') }}" autofocus>
-
-                                        @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-
+                                        <input class="form-control" type="text" placeholder="Address">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="password" placeholder="Password">--}}
-
-                                        <input id="password_2" type="password"
-                                               class="form-control @error('password') is-invalid @enderror"
-                                               name="password" placeholder="password" required
-                                               autocomplete="new-password">
-
-                                        @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-
+                                        <input class="form-control" type="password" placeholder="Password">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        {{--                                    <input class="form-control" type="password" placeholder="Confirm Password">--}}
-                                        <input id="password-confirm" type="password" class="form-control"
-                                               name="password_confirmation" required autocomplete="new-password"
-                                               placeholder="Confirm Password">
+                                        <input class="form-control" type="password" placeholder="Confirm Password">
                                     </div>
                                     <div class="col-md-12 text-center">
-                                        <button type="submit" class="yellow-btn">  {{ __('Register') }}</button>
+                                        <button type="button" class="yellow-btn">Register</button>
                                     </div>
-
                                 </div>
                                 <br>
-
-
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <br><br><br>
-
-        <!-- fixed icon -->
-
-        <div class="fix">
-            <a data-toggle="modal" data-target="#cart">
-                <img src="{{asset('frontend/images/icons/fix.png')}}" alt="">
-                <div class="fix-info">
-                    <p><span id="total_cart_item">{{$cart_count}} </span> Item</p>
-                    <h6>৳ <span id="total_amount_side">{{$total_amount}}</span></h6>
-                </div>
-            </a>
-        </div>
-
-        <!-- category -->
-
-        <section>
-            <div class="red-sh category text-center">
-                <h2>Shop by Category</h2>
-                <p></p>
-                <div class="products-anchor">
-                    <button class="red-btn"><a href="{{route('shop-page.index')}}">View All Products</a></button>
-                </div>
-                <br><br><br>
-                <div class="container">
-                    <div class="all-category d-flex justify-content-center">
-
-                        @foreach($categories as $cat_item)
-                            <div class="cat-info cat-info-1 d-flex align-items-center justify-content-center">
-                                <a href="{{route('home_category_product.get',$cat_item->id)}}"
-                                   data-id="{{$cat_item->id}}" id="{{$cat_item->id}}">
-                                    <div class="">
-                                        <img src="{{ asset('frontend/images/'.$cat_item->category_image)  }}" alt="">
-                                        <br>
-                                        <small>{{$cat_item->category_name}}</small>
-
-
-                                    </div>
-                                </a>
-                            </div>
-                        @endforeach
-                        {{--                    <div class="cat-info d-flex align-items-center justify-content-center">--}}
-                        {{--                        <a href="#">--}}
-                        {{--                            <div class="">--}}
-                        {{--                                <img src="{{asset('frontend/images/category-icons/cow.png')}}" alt="">--}}
-                        {{--                                <br>--}}
-                        {{--                                <small>Cow</small>--}}
-                        {{--                            </div>--}}
-                        {{--                        </a>--}}
-                        {{--                    </div>--}}
-                        {{--                    <div class="cat-info d-flex align-items-center justify-content-center">--}}
-                        {{--                        <a href=#"">--}}
-                        {{--                            <div class="">--}}
-                        {{--                                <img src="{{asset('frontend/images/category-icons/sheep.png')}}" alt="">--}}
-                        {{--                                <br>--}}
-                        {{--                                <small>Lamb</small>--}}
-                        {{--                            </div>--}}
-                        {{--                        </a>--}}
-                        {{--                    </div>--}}
-                        {{--                    <div class="cat-info d-flex align-items-center justify-content-center">--}}
-                        {{--                        <a href="#">--}}
-                        {{--                            <div class="">--}}
-                        {{--                                <img src="{{asset('frontend/images/category-icons/fish.png')}}" alt="">--}}
-                        {{--                                <br>--}}
-                        {{--                                <small>Fish</small>--}}
-                        {{--                            </div>--}}
-                        {{--                        </a>--}}
-                        {{--                    </div>--}}
-                        {{--                    <div class="cat-info d-flex align-items-center justify-content-center">--}}
-                        {{--                        <a href="#">--}}
-                        {{--                            <div class="">--}}
-                        {{--                                <img src="{{asset('frontend/images/category-icons/horse.png')}}" alt="">--}}
-                        {{--                                <br>--}}
-                        {{--                                <small>Horse</small>--}}
-                        {{--                            </div>--}}
-                        {{--                        </a>--}}
-                        {{--                    </div>--}}
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <br><br>
 
         <!-- modal cart -->
 
@@ -433,25 +229,9 @@
                                     <p>৳ <span id="total">{{$total_amount}}</span></p>
                                 </div>
                                 <br>
-                                {{--                            <div class="text-center">--}}
-                                {{--                                <button class="yellow-btn">Checkout</button>--}}
-                                {{--                            </div>--}}
-                                @if( Auth::user()==null)
-                                    <div class="text-center">
-                                        {{--                                    <form action="{{route('home')}}">--}}
-                                        <button data-toggle="modal" data-target="#login" id="checkout_btn"
-                                                class="yellow-btn">Checkout
-                                        </button>
-                                        {{--                                    </form>--}}
-                                    </div>
-                                @else
-                                    <div class="text-center">
-                                        <form action="{{route('home')}}">
-                                            <button class="yellow-btn">Checkout</button>
-                                        </form>
-                                    </div>
-
-                                @endif
+                                <div class="text-center">
+                                    <button class="yellow-btn">Checkout</button>
+                                </div>
                                 <br>
                             </div>
                             <div class="col-md-1"></div>
@@ -462,208 +242,179 @@
             </div>
         </div>
 
-        <br><br>
+        <!-- fixed icon -->
 
-        <!-- popular products -->
-
-        <section>
-            <div class="category container-fluid">
-                <div class="red-sh text-center products-anchor">
-                    <h2>Popular Products</h2>
-                    <p></p>
-                    <button class="red-btn"><a href="{{route('shop-page.index')}}">View All Products</a></button>
+        <div class="fix">
+            <a data-toggle="modal" data-target="#cart">
+                <img src="{{asset('frontend/images/icons/fix.png')}}" alt="">
+                <div class="fix-info">
+                    {{--                    <p>50 Items</p>--}}
+                    {{--                    <h6>৳ 45000</h6>--}}
+                    <p><span id="total_cart_item">{{$cart_count}} </span> Item</p>
+                    <h6>৳ <span id="total_amount_side">{{$total_amount}}</span></h6>
                 </div>
-                <br>
-                <div class="row products">
-                    @foreach($products as $product)
-                        <div class="col-md-4 col-lg-3 col-12 col-sm-6 col-xl-2">
-                            <div class="" id="{{ $product->id }}" data-id="{{$product->id}}">
-                                <img src="{{ asset($product->product_image) }}" alt="">
-                                <div class="product-info text-center">
-                                    <a href="{{route('single_product.get',$product->id)}}">
-                                        <h6>{{ $product->product_name }}</h6>
-                                    </a>
-                                    <small>{{ $product->quantity }}</small>
-                                    <br>
-                                    <strong>৳ {{ $product->price }}</strong>
-                                </div>
-                                <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">
-                                    <div style="display: none" id="item-plus-minus-{{$product->id}}"
-                                         class="cart-plus-minus"
-                                         data-id="{{$product->id}}">
-                                        <div class="plus-minus d-flex ">
-                                            <button id="product-minus-{{$product->id}}" class="page-minus"><strong
-                                                    class="d-flex align-items-center justify-content-center">-</strong>
-                                            </button>
-                                            <p class="d-flex align-items-center justify-content-center">
-                                                {{--                                        <span--}}
-                                                {{--                                            class="product-item-quantity"--}}
-                                                {{--                                            id="product-item-quantity-{{$product->id}}">0</span> in Cart--}}
-                                                @if($product->cart_product !==null)
-                                                    @if($product->cart_product->product_id == $product->id)
-                                                        <span id="product-item-quantity-{{$product->id}}"
-                                                              class="product-item-quantity">{{number_format(($product->cart_product->product_quantity)-1)}}</span>
-                                                        in Cart
+            </a>
+        </div>
 
-                                                    @endif
+        <!-- all products -->
 
-                                                @else
-                                                    <span id="product-item-quantity-{{$product->id}}"
-                                                          class="product-item-quantity">0</span> in Cart
-                                                @endif
-                                            </p>
-                                            <button id="product-plus-{{$product->id}}" class="page-plus"><strong
-                                                    class="d-flex align-items-center justify-content-center">+</strong>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
-                                    <button id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
-                                            class="yellow-btn cart-add">Add to cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+        <div class="container-fluid shop-products">
+
+            <!-- sidebar -->
+
+            <div id="see-side" class="see-side">
+                <!-- <div id="mySidenav" class="sidenav"> -->
+                <div id="custom" class="custom">
+                    <a href="" class="menu d-flex align-items-center">
+                        <p></p>
+                        <img src="{{asset('frontend/images/icons/coronavirus.png')}}" alt="">
+                        <p>COVID-19 Protections</p>
+                    </a>
+
+
+                    @foreach($categories as $cat_item)
+                        <a href="" data-id="{{$cat_item->id}}" class="menu d-flex align-items-center sidebar_category">
+                            <p></p>
+                            <img style="width: 70px;height: 70px"
+                                 src="{{ asset('frontend/images/'.$cat_item->category_image)  }}" alt="">
+
+                            <p>{{$cat_item->category_name}}</p>
+                        </a>
                     @endforeach
-
-                </div>
-            </div>
-        </section>
-
-
-        <!-- blogs -->
-
-        <section class="blog">
-            <div class="yellow-sh text-center blog-anchor">
-                <h2>Our Blogs</h2>
-                <p>see our blog story to decide yourself</p>
-                <button class="red-btn"><a href="{{route('blog-page.index')}}">View All</a></button>
-            </div>
-            <br>
-            <div class="container-fliud">
-                <div class="m-auto blog-width">
-                    <div class="row">
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog1.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>Chicken is important</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog2.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>Dul risus</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog3.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>Elementum cras</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog3.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>Delicious prawn</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog1.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>Rui mach</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12 col-sm-6 col-lg-4 col-xl-3">
-                            <div class="blog-info">
-                                <img src="{{asset('frontend/images/blogs/blog2.jpeg')}}" alt="">
-                                <div class="blog-details">
-                                    <a href="singleBlog.html">
-                                        <h6>lamb stack</h6>
-                                    </a>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maiores.
-                                    </p>
-                                    <small>23 January, 2020</small>
-                                </div>
-                            </div>
-                        </div>
+                    {{--                    <a href="" class="side-menu-last menu d-flex align-items-center">--}}
+                    {{--                        <p></p>--}}
+                    {{--                        <img src="{{asset('frontend/images/icons/fish.png')}}" alt="">--}}
+                    {{--                        <p>Fish</p>--}}
+                    {{--                    </a>--}}
+                    <br>
+                    <div id="range" class="range">
+                        <h6>Price Range</h6>
+                        <input type="range" id="myinput" min="200" max="1000">
+                        <br>
+                        <small>৳ 200 - 1000</small>
                     </div>
                 </div>
+
             </div>
-        </section>
 
-        <br><br>
+            <!-- products -->
+
+            <div id="all-products" class="row all-products products">
+                @foreach($products as $product)
+
+                    <div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">
+
+                        <div class="" id="{{ $product->id }}" data-id="{{$product->id}}">
+                            <img src="{{ asset($product->product_image) }}" alt="">
+                            <div class="product-info text-center special_info">
+                                <a href="{{route('single_product.get',$product->id)}}">
+                                    <h6>{{ $product->product_name }}</h6>
+                                </a>
+                                <small>{{ $product->quantity }}</small>
+                                <br>
+                                <strong>৳ {{ $product->price }}</strong>
+
+                            </div>
+
+                            <div class="product_cart" id="{{ $product->id }}" data-id="{{$product->id}}">
+                                <div style="display: none" id="item-plus-minus-{{$product->id}}"
+                                     data-id="{{$product->id}}"
+                                     class="cart-plus-minus">
+
+                                    <div class="plus-minus d-flex test">
+                                        <button class="page-minus" id="product-minus-{{$product->id}}">
+                                            <strong class="d-flex align-items-center justify-content-center">-</strong>
+                                        </button>
+                                        <p class="d-flex align-items-center justify-content-center">
+
+                                            @if($product->cart_product !==null)
+                                                @if($product->cart_product->product_id == $product->id)
+                                                    <span id="product-item-quantity-{{$product->id}}"
+                                                          class="product-item-quantity">{{number_format(($product->cart_product->product_quantity)-1)}}</span>
+                                                    in Cart
+
+                                                @endif
+
+                                            @else
+                                                <span id="product-item-quantity-{{$product->id}}"
+                                                      class="product-item-quantity">0</span> in Cart
+                                            @endif
+                                        </p>
+
+                                        <button id="product-plus-{{$product->id}}" class="page-plus">
+                                            <strong class="d-flex align-items-center justify-content-center">+</strong>
+                                        </button>
+                                    </div>
+
+                                </div>
 
 
-        @if(Auth::user())
-            <input type="hidden" id="hidden_user_id" data-id="{{Auth::user()->id}}" value="{{Auth::user()->id}}">
+                                <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
+                                <button type="button" id='item-zero-{{$product->id}}' data-id="{{ $product->id }}"
+                                        class="yellow-btn cart-add">
+                                    Add to cart
+                                </button>
+                            </div>
 
-        @else
-            <input type="hidden" id="hidden_user_id" data-id="null" value="null">
-        @endif
+                        </div>
+                    </div>
+
+                @endforeach
+
+
+                {{--            <div class="col-md-12">--}}
+                {{--                <div class="pagination-custom text-center">--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>1</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a class="red" href="">--}}
+                {{--                        <p>2</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>3</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>...</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>20</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>21</p>--}}
+                {{--                    </a>--}}
+                {{--                    <a href="">--}}
+                {{--                        <p>22</p>--}}
+                {{--                    </a>--}}
+                {{--                </div>--}}
+                {{--            </div>--}}
+            </div>
+        </div>
 
     </main>
-
-
-
-
 @endsection
 
 @section('page_plugin_script')
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
             integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
             crossorigin="anonymous"></script>
 @endsection
 
 @section('page_level_script')
+
     <script>
 
         var config = {
             routes: {
 
-                get_product: "{!! route('products.get') !!}",
+{{--                get_product: "{!! route('products.get') !!}",--}}
+                get_product: "{!! route('category.home') !!}",
                 product_add_to_cart_operation: "{!! route('add_to_cart.products') !!}",
                 get_cart_items: "{!! route('cart-items.get') !!}",
                 cart_items_delete: "{!! route('cart-items.delete') !!}",
                 cart_total: "{!! route('cart-items.total') !!}",
-                {{--                home_category_wise_product: "{!! route('category.home') !!}",--}}
-                {{--                home_category_wise_product: "{!! route('home_category_product.get') !!}",--}}
 
-                {{--category_wise_product: "{!! route('category_wise_product.get') !!}",--}}
+                category_wise_product: "{!! route('category_wise_product.get') !!}",
                 {{--slider_price_value: "{!! route('price_wise_product.get') !!}",--}}
 
 
@@ -677,7 +428,7 @@
                 var cart_product_id = $(this).data('id');
                 var cart_id = $('#hidden_cart_id').data('id');
 
-                console.log(cart_product_id, cart_id);
+                // console.log(cart_product_id, cart_id);
 
                 $.ajax({
                     url: config.routes.cart_items_delete,
@@ -710,7 +461,7 @@
 
                 success: function (data) {
 
-                    console.log(data.total_amount);
+                    // console.log(data.total_amount);
 
                     $("#total").text(data.total_amount);
                     $("#total_amount_side").text(data.total_amount);
@@ -766,27 +517,99 @@
             });
         }
 
-
         $(document).ready(function () {
 
+            var category_id= $('#hidden_id').data('id');
+            // alert(hidden_id);
 
-            // cart_test();
-
-            // cartTotal();
             test_cart();
             modal_operation();
+            sidebar_category();
+
+            //
+            function sidebar_category() {
+
+                $('.sidebar_category').click(function (e) {
+                    e.preventDefault();
+                    var category_id = $(this).data('id');
+
+                    $.ajax({
+                        url: config.routes.category_wise_product,
+                        type: "get",
+                        data: {
+
+                            category_id: category_id
+                        },
+
+                        success: function (data) {
+
+                            $('#all-products').empty();
+                            $.each(data.products, function (key, value) {
+
+                                $('#all-products').append('<div class="col-md-4 col-lg-4 col-12 col-sm-6 col-xl-3">  <div class="" id="' + value.id + '" data-id="' + value.id + '"> <img src="/' + value.product_image + '" alt="">   <div class="product-info text-center"> <a href="#"> <h6>' + value.product_name + '</h6></a>  <small>' + value.quantity + '</small><br><strong>৳ ' + value.price + '</strong>   </div>  <div class="product_cart" id="' + value.id + '" data-id="' + value.id + '"> <div style="display: none" id="item-plus-minus-' + value.id + '" data-id="' + value.id + '" class="cart-plus-minus">   <div class="plus-minus d-flex test">    <button class="page-minus" id="product-minus-' + value.id + '"><strong class="d-flex align-items-center justify-content-center">-</strong></button>        <p class="d-flex align-items-center justify-content-center">  <span id="product-item-quantity-' + value.id + '" class="product-item-quantity">0 </span> in Cart</p> <button id="product-plus-' + value.id + '" class="page-plus"> <strong class="d-flex align-items-center justify-content-center">+</strong></button> </div></div>  <input type="hidden" name="product_id" id="product_id" value="' + value.id + '"> <button type="button" id="item-zero-' + value.id + '" data-id="' + value.id + '" class="yellow-btn cart-add">Add to cart</button>   </div>   </div> </div>');
+                            });
+                            cartTotal();
 
 
-            $('#checkout_btn').on('click', function () {
+                            $.each(data.products, function (key, value) {
 
-                var user_id = $('#hidden_user_id').data('id');
+                                cartItemsAdd[key].onclick = function () {
+                                    let item = cartItemsAdd[key];
+                                    item.style.display = "none";
+                                    // console.log(value.id);
+                                    document.getElementById("item-plus-minus-" + value.id).style.display = "block";
+                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
+                                    const quantityNumber = parseInt(quantity);
+                                    updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
+                                }
+                            });
 
-                console.log(user_id);
-                if (user_id == null) {
-                    $('#cart').hide();
 
-                }
-            });
+                            $.each(data.products, function (key, value) {
+
+                                cartPlus[key].onclick = function () {
+                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
+                                    const quantityNumber = parseInt(quantity);
+                                    updatedQuantity(("product-item-quantity-" + value.id), 1, quantityNumber);
+                                }
+                            });
+
+
+                            $.each(data.products, function (key, value) {
+
+                                cartMinus[key].onclick = function () {
+                                    let item = cartMinus[key];
+                                    const quantity = document.getElementById("product-item-quantity-" + value.id).innerText;
+                                    const quantityNumber = parseInt(quantity);
+                                    if (quantity > 1) {
+                                        updatedQuantity(("product-item-quantity-" + value.id), -1, quantityNumber);
+                                    } else {
+                                        updatedQuantity(("product-item-quantity-" + value.id), -1, quantityNumber);
+                                        document.getElementById("item-plus-minus-" + value.id).style.display = "none";
+                                        document.getElementById("item-zero-" + value.id).style.display = "block";
+                                    }
+                                }
+                            });
+
+
+                            modal_operation();
+
+
+                        },
+
+
+                        error: function (data, errorThrown) {
+
+
+                        }
+                    })
+
+
+                });
+
+
+            }
+
 
             function modal_operation() {
 
@@ -855,11 +678,11 @@
                             })
 
                         });
-                        // $('.product_cart, .my_cart_item').on('click', function (e) {
+
                         $('.product_cart').on('click', function (e) {
 
-                            // alert('I am here');
 
+                            // e.preventDefault();
                             var product_id = $(this).data('id');
                             var product_quantity = ($(this).find('.product-item-quantity').text());
                             // var cart_quantity = ($(this).find('.cart_quantity').text());
@@ -885,7 +708,7 @@
                                         cartTotal();
                                         // $('#modal_cart_items').empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
 
                                         cartCross();
                                         test_cart();
@@ -935,7 +758,7 @@
                                         // $('#modal_cart_items').empty();
                                         cartTotal();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#modal_cart_items').append('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p>  <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">  </div>      </div>               </div>                       </div>       <hr>         </div>');
                                         cartCross();
                                         test_cart();
 
@@ -985,7 +808,7 @@
                                         cartTotal();
                                         $('#item' + data.cart_product.id).empty();
                                         var subTotalPrice = data.cart_product.product.price * data.cart_product.product_quantity;
-                                        $('#item' + data.cart_product.id).replaceWith('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="frontend/images/icons/cross.png" alt=""></p> <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">   </div>      </div>               </div>                       </div>       <hr>         </div>');
+                                        $('#item' + data.cart_product.id).replaceWith('<div class="all_cart_items" id="item' + data.cart_product.id + '" data-id="all_items_cart_id' + data.cart_product.id + '"><div class="row"><div class="cart-font col-md-8 col-sm-8 col-8">' + data.cart_product.product.product_name + '</div> <div class="col-md-4 col-sm-4 col-4">৳ <span id="subTotal' + data.cart_product.id + '"> ' + subTotalPrice + ' </span> </div>    <div class="col-md-12 col-sm-10 col-10 ">   <p></p>     <div class="row ">         <div class="col-md-4 col-sm-4 col-4">  <p class="single d-flex align-items-center justify-content-center">৳ <span id="itemTotal1">' + data.cart_product.product.price + '</span>kg</p></div> <div class="col-md-4 col-sm-6 col-6 d-flex align-items-center my_cart_item" data-id="' + data.cart_product.product_id + '">  <p id="cartMinus' + data.cart_product.id + '" class="cartMinus d-flex align-items-center justify-content-center"> <img src="/frontend/images/icons/minus.png" alt=""></p>  <p class="items"><span class="cart_quantity" id="item_quantity-' + data.cart_product.id + '">' + data.cart_product.product_quantity + '</span></p> <p id="cartPlus' + data.cart_product.id + '" class="cartPlus d-flex justify-content-center align-items-center"><img src="/frontend/images/icons/plus.png" alt=""></p>     </div>    <div class="col-md-4 col-sm-2 col-2"><p id="cartCross' + data.cart_product.id + '" class="d-flex align-items-center justify-content-center cartCross" data-id="' + data.cart_product.id + '"><img src="/frontend/images/icons/cross.png" alt=""></p> <input type="hidden" data-id="' + data.cart_product.cart_id + '" id="hidden_cart_id">   </div>      </div>               </div>                       </div>       <hr>         </div>');
                                         cartCross();
                                         test_cart();
 
@@ -1060,11 +883,15 @@
             $.ajax({
                 url: config.routes.get_product,
                 type: "get",
-                data: {},
+                data: {
+                    category_id: category_id
+                },
                 success: function (data) {
 
                     // console.log(data.products);
                     // cartTotal();
+
+
                     $.each(data.products, function (key, value) {
 
                         if (value.cart_product !== null) {
@@ -1082,8 +909,8 @@
                             }
                         }
 
-
                         cartItemsAdd[key].onclick = function () {
+
                             let item = cartItemsAdd[key];
                             item.style.display = "none";
                             // console.log(value.id);
@@ -1184,4 +1011,6 @@
 
 
     </script>
+
+
 @endsection
